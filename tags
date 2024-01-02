@@ -36,6 +36,13 @@
 !_TAG_KIND_DESCRIPTION!Make	I,makefile	/makefiles/
 !_TAG_KIND_DESCRIPTION!Make	m,macro	/macros/
 !_TAG_KIND_DESCRIPTION!Make	t,target	/targets/
+!_TAG_KIND_DESCRIPTION!Markdown	S,subsection	/level 2 sections/
+!_TAG_KIND_DESCRIPTION!Markdown	T,l4subsection	/level 4 sections/
+!_TAG_KIND_DESCRIPTION!Markdown	c,chapter	/chapters/
+!_TAG_KIND_DESCRIPTION!Markdown	n,footnote	/footnotes/
+!_TAG_KIND_DESCRIPTION!Markdown	s,section	/sections/
+!_TAG_KIND_DESCRIPTION!Markdown	t,subsubsection	/level 3 sections/
+!_TAG_KIND_DESCRIPTION!Markdown	u,l5subsection	/level 5 sections/
 !_TAG_OUTPUT_EXCMD	mixed	/number, pattern, mixed, or combineV2/
 !_TAG_OUTPUT_FILESEP	slash	/slash or backslash/
 !_TAG_OUTPUT_MODE	u-ctags	/u-ctags or e-ctags/
@@ -43,6 +50,7 @@
 !_TAG_PARSER_VERSION!C	0.0	/current.age/
 !_TAG_PARSER_VERSION!C++	0.0	/current.age/
 !_TAG_PARSER_VERSION!Make	0.0	/current.age/
+!_TAG_PARSER_VERSION!Markdown	0.0	/current.age/
 !_TAG_PATTERN_LENGTH_LIMIT	96	/0 for no limit/
 !_TAG_PROC_CWD	/home/ruben/Programacion/proyectosEstudio/c_interpreter/	//
 !_TAG_PROGRAM_AUTHOR	Universal Ctags Team	//
@@ -116,7 +124,7 @@ includeFile	src/precompiler.c	/^int includeFile(char *file, FILE *stream_out, ch
 main	a.c	/^int main() {$/;"	f	typeref:typename:int
 main	test.c	/^int main() {$/;"	f	typeref:typename:int
 main	test/includes/fortest/main.c	/^int main() {$/;"	f	typeref:typename:int
-main	test/includes/results/main.c.c	/^int main() {$/;"	f	typeref:typename:int
+main	test/includes/results/main.c.c	/^int main(){$/;"	f	typeref:typename:int
 main	test/includes/test.c	/^int main() {$/;"	f	typeref:typename:int
 main	test/testPrecompiles.c	/^int main() {$/;"	f	typeref:typename:int
 manageSpaces	src/precompiler.c	/^void manageSpaces(FILE *stream, char *token, char *prevToken) {$/;"	f	typeref:typename:void
@@ -129,10 +137,12 @@ prepareMacro	src/precompiler.c	/^int prepareMacro(char *dest, char **prototipeAR
 reportFileError	src/status.c	/^void reportFileError(int nLine, char *file) {$/;"	f	typeref:typename:void
 reportPrecompileSyntaxError	src/status.c	/^void reportPrecompileSyntaxError(int nLine, char *extraInfo) {$/;"	f	typeref:typename:void
 res	test/includes/fortest/res.c	/^int res(int a, int b) { return a + b; }$/;"	f	typeref:typename:int
+res	test/includes/results/res.c.c	/^int res(int a,int b){return a+b;}$/;"	f	typeref:typename:int
 resolveDefines	src/precompiler.c	/^int resolveDefines(char *line) {$/;"	f	typeref:typename:int
 skipComments	src/precompiler.c	/^void skipComments(FILE *stream, char *token, char *prevToken) {$/;"	f	typeref:typename:void
 stream_out	src/precompiler.c	/^FILE *stream_out;$/;"	v	typeref:typename:FILE *
 sum	test/includes/fortest/sum.c	/^int sum(int a, int b) { return a + b; }$/;"	f	typeref:typename:int
+sum	test/includes/results/sum.c.c	/^int sum(int a,int b){return a+b;}$/;"	f	typeref:typename:int
 sumamismo	test2.h	/^#define sumamismo(/;"	d
 testIncludes	Makefile	/^testIncludes:$/;"	t
 testVariables	src/precompiler.c	/^void testVariables() {$/;"	f	typeref:typename:void
