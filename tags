@@ -43,6 +43,10 @@
 !_TAG_KIND_DESCRIPTION!Markdown	s,section	/sections/
 !_TAG_KIND_DESCRIPTION!Markdown	t,subsubsection	/level 3 sections/
 !_TAG_KIND_DESCRIPTION!Markdown	u,l5subsection	/level 5 sections/
+!_TAG_KIND_DESCRIPTION!Sh	a,alias	/aliases/
+!_TAG_KIND_DESCRIPTION!Sh	f,function	/functions/
+!_TAG_KIND_DESCRIPTION!Sh	h,heredoc	/label for here document/
+!_TAG_KIND_DESCRIPTION!Sh	s,script	/script files/
 !_TAG_OUTPUT_EXCMD	mixed	/number, pattern, mixed, or combineV2/
 !_TAG_OUTPUT_FILESEP	slash	/slash or backslash/
 !_TAG_OUTPUT_MODE	u-ctags	/u-ctags or e-ctags/
@@ -51,6 +55,7 @@
 !_TAG_PARSER_VERSION!C++	0.0	/current.age/
 !_TAG_PARSER_VERSION!Make	0.0	/current.age/
 !_TAG_PARSER_VERSION!Markdown	0.0	/current.age/
+!_TAG_PARSER_VERSION!Sh	0.0	/current.age/
 !_TAG_PATTERN_LENGTH_LIMIT	96	/0 for no limit/
 !_TAG_PROC_CWD	/home/ruben/Programacion/proyectosEstudio/c_interpreter/	//
 !_TAG_PROGRAM_AUTHOR	Universal Ctags Team	//
@@ -65,6 +70,8 @@
 !_TAG_ROLE_DESCRIPTION!C++!macro	undef	/undefined/
 !_TAG_ROLE_DESCRIPTION!Make!makefile	included	/included/
 !_TAG_ROLE_DESCRIPTION!Make!makefile	optional	/optionally included/
+!_TAG_ROLE_DESCRIPTION!Sh!heredoc	endmarker	/end marker/
+!_TAG_ROLE_DESCRIPTION!Sh!script	loaded	/loaded/
 ARGS	src/precompiler.c	/^      char **ARGS;$/;"	m	struct:Define	typeref:typename:char **	file:
 ASTERISK	src/precompiler.c	/^      const char ASTERISK;$/;"	m	struct:Token	typeref:typename:const char	file:
 BIN	Makefile	/^BIN = bin\/$/;"	m
@@ -124,7 +131,7 @@ includeFile	src/precompiler.c	/^int includeFile(char *file, FILE *stream_out, ch
 main	a.c	/^int main() {$/;"	f	typeref:typename:int
 main	test.c	/^int main() {$/;"	f	typeref:typename:int
 main	test/includes/fortest/main.c	/^int main() {$/;"	f	typeref:typename:int
-main	test/includes/results/main.c.c	/^int main(){$/;"	f	typeref:typename:int
+main	test/includes/results/main.c.c	/^int main() {$/;"	f	typeref:typename:int
 main	test/includes/test.c	/^int main() {$/;"	f	typeref:typename:int
 main	test/testPrecompiles.c	/^int main() {$/;"	f	typeref:typename:int
 manageSpaces	src/precompiler.c	/^void manageSpaces(FILE *stream, char *token, char *prevToken) {$/;"	f	typeref:typename:void
@@ -137,6 +144,7 @@ prepareMacro	src/precompiler.c	/^int prepareMacro(char *dest, char **prototipeAR
 reportFileError	src/status.c	/^void reportFileError(int nLine, char *file) {$/;"	f	typeref:typename:void
 reportPrecompileSyntaxError	src/status.c	/^void reportPrecompileSyntaxError(int nLine, char *extraInfo) {$/;"	f	typeref:typename:void
 res	test/includes/fortest/res.c	/^int res(int a, int b) { return a + b; }$/;"	f	typeref:typename:int
+res	test/includes/results/res.c	/^aaa int res(int a, int b) { return a + b; }$/;"	f	typeref:typename:aaa int
 res	test/includes/results/res.c.c	/^int res(int a,int b){return a+b;}$/;"	f	typeref:typename:int
 resolveDefines	src/precompiler.c	/^int resolveDefines(char *line) {$/;"	f	typeref:typename:int
 skipComments	src/precompiler.c	/^void skipComments(FILE *stream, char *token, char *prevToken) {$/;"	f	typeref:typename:void

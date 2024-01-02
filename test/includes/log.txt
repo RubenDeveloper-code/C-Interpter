@@ -1,4 +1,0 @@
-test/includes/results/main.c.c: En la función ‘main’:
-test/includes/results/main.c.c:4:18: aviso: declaración implícita de la función ‘sum’ [-Wimplicit-function-declaration]
-    4 |       int sum_ = sum(1, 2);
-      |                  ^~~
