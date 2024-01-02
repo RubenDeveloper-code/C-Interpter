@@ -2,14 +2,14 @@
 #define __PRECOMPILER_H__
 
 #include <stdio.h>
-int precompileAll(char **files, int nfiles);
-int precompileFile(char *file);
-int precompile(FILE *stream);
-int findPrecompilerOrder(FILE *stream);
-int filterPrecompileOrder(FILE *stream, FILE *stream_out);
+int precompileAll(char **files, int nfiles, char *out_path);
+int precompileFile(char *file, char *out_path);
+int precompile(FILE *stream, char *file_src_path);
+int findPrecompilerOrder(FILE *stream, char *file_src_path);
+int filterPrecompileOrder(FILE *stream, FILE *stream_out, char *file_src_path);
 
 char *getIncludeFile(FILE *stream);
-int includeFile(char *file, FILE *stream_out);
+int includeFile(char *file, FILE *stream_out, char *file_src_path);
 
 char *getDefineVariable(FILE *stream);
 char *getDefineValue(FILE *stream);

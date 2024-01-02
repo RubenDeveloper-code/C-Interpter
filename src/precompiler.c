@@ -1,8 +1,10 @@
 #include "../include/precompiler.h"
+#include "../include/status.h"
 #include <stddef.h>
 #include <stdint.h>
 #define _POSIX1_SOURCE 2
 #include <ctype.h>
+#include <libgen.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -49,42 +51,47 @@ struct Token {
             '<', '>',  "define", "ifdef", "ifndef", "endif"};
 
 // cambiar a enum
-struct Status {
-      const int SUCCESS;
-      const int FILE_NOT_EXISTS;
-      const int SYNTAX_ERROR;
-} STATUS = {0, 1, 2};
 
-int precompileAll(char *files[], int nfiles) {
+int precompileAll(char *files[], int nfiles, char *out_path) {
       char **ptr = files;
       while (nfiles-- > 0) {
             printf("archivo a precopilar: %i\n", nfiles + 1);
-            int status = precompileFile(*ptr++);
-            if (status != STATUS.SUCCESS)
+            int status = precompileFile(*ptr++, out_path);
+            if (status != SUCCESS)
                   return status;
       }
-      return STATUS.SUCCESS;
+      return SUCCESS;
 }
 
 // Precompila el .c incluyendo todo...a
-int precompileFile(char *file) {
+int precompileFile(char *file, char *out_path) {
       FILE *stream = fopen(file, "r");
       char *fileoutext = ".pre";
-      char *filename =
-          malloc((strlen(file) + strlen(fileoutext) + 1) * sizeof(char));
-      strcpy(filename, file);
+      char *filename = malloc((BUFFSIZE) * sizeof(char));
+      *filename = TOKENS.ZERO_END;
+      strcat(filename, out_path);
+      char *ptr_slash = strrchr(file, TOKENS.SLASH);
+      if (ptr_slash != NULL)
+            strcat(filename, ((strrchr(file, TOKENS.SLASH)) + 1));
+      else
+            strcat(filename, file);
       strcat(filename, fileoutext);
+      printf("filename: %s", filename);
       stream_out = fopen(filename, "a+");
       if (stream == NULL)
-            return STATUS.FILE_NOT_EXISTS;
-      int status = precompile(stream);
+            return FILE_NOT_EXISTS;
+      char *cpy_file = strdup(file);
+      char *dir = strdup(dirname(cpy_file));
+      char end_path[] = {TOKENS.SLASH, TOKENS.ZERO_END};
+      strcat(dir, end_path);
+      int status = precompile(stream, dir);
 
       fclose(stream_out);
       free(filename);
       return status;
 }
 // sirve para precompilar .h o .c
-int precompile(FILE *stream) {
+int precompile(FILE *stream, char *path_src) {
       char token;
       int status;
       int Analyze = 1;
@@ -95,8 +102,9 @@ int precompile(FILE *stream) {
                   Analyze = !Analyze;
             if (Analyze) {
                   if (token == TOKENS.PRECOMPILE_ORDER) {
-                        status = filterPrecompileOrder(stream, stream_out);
-                        if (status != STATUS.SUCCESS)
+                        status =
+                            filterPrecompileOrder(stream, stream_out, path_src);
+                        if (status != SUCCESS)
                               return status;
                         continue;
                   }
@@ -111,7 +119,53 @@ int precompile(FILE *stream) {
                   *ptr++ = token;
             }
       }
-      return STATUS.SUCCESS;
+      return SUCCESS;
+}
+// include<...> || define ....
+int filterPrecompileOrder(FILE *stream, FILE *stream_out, char *path_src) {
+      char *token = malloc(BUFFSIZE * sizeof(char));
+      char *ptr = token;
+      while (isalnum(*ptr = ffgetc(stream)))
+            ptr++;
+      *ptr = TOKENS.ZERO_END;
+      if (strcmp(token, TOKENS.INCLUDE_ORDER) == 0) {
+            free(token);
+            char *file = getIncludeFile(stream);
+            return includeFile(file, stream_out, path_src);
+      }
+      if (strcmp(token, TOKENS.DEFINE) == 0) {
+            free(token);
+            char *name = getDefineVariable(stream);
+            char *value = getDefineValue(stream);
+            return addVariableAndValue(name, value);
+      }
+      return SYNTAX_ERROR;
+}
+// namefile>
+char *getIncludeFile(FILE *stream) {
+      char *token = malloc(BUFFSIZE * sizeof(char));
+      char *ptr = token;
+      while ((*ptr = ffgetc(stream)) != TOKENS.INCLUDE_FIELD_CLOSED &&
+             *ptr != TOKENS.QUOTES)
+            ptr++;
+      if (*ptr != TOKENS.INCLUDE_FIELD_CLOSED && *ptr != TOKENS.QUOTES) {
+            // syntax error errorReport(error, line)
+      }
+      *ptr = TOKENS.ZERO_END;
+      return token;
+}
+
+// namefile.h || el archivo se obtiene de donde este el .c relativo a este...
+int includeFile(char *file, FILE *stream_out, char *path_src) {
+      char *filepath = malloc(sizeof(char) * BUFFSIZE);
+      strcpy(filepath, path_src);
+      strcat(filepath, file);
+      printf("filepath: %s", filepath);
+      FILE *include_stream = fopen(filepath, "r");
+      precompile(include_stream, path_src);
+      free(file);
+      free(filepath);
+      return SUCCESS;
 }
 
 int resolveDefines(char *line) {
@@ -140,7 +194,7 @@ int resolveDefines(char *line) {
                         strcpy(solvedMacro, DEFINES[i]->value);
                         int check = prepareMacro(solvedMacro, DEFINES[i]->ARGS,
                                                  callARGS);
-                        if (check != STATUS.SUCCESS)
+                        if (check != SUCCESS)
                               return check;
                         char buffLine[BUFFSIZE];
                         snprintf(buffLine, BUFFSIZE, "%.*s%s%s",
@@ -152,7 +206,7 @@ int resolveDefines(char *line) {
                   }
             }
       }
-      return STATUS.SUCCESS;
+      return SUCCESS;
 }
 void getMacroName(char *src, char *nameMacro) {
       snprintf(nameMacro, BUFFSIZE, "%.*s%c",
@@ -205,7 +259,7 @@ int prepareMacro(char *dest, char **prototipeARGS, char **callARGS) {
       while (*ptr_pptargs != NULL) {
             ptr = dest + offset;
             if (*ptr_callargs == NULL) {
-                  return STATUS.SYNTAX_ERROR;
+                  return SYNTAX_ERROR;
             }
             while ((ptr = strstr(ptr, *ptr_pptargs)) != NULL) {
                   snprintf(buff, BUFFSIZE, "%.*s%s%s", (int)(ptr - dest), dest,
@@ -219,29 +273,8 @@ int prepareMacro(char *dest, char **prototipeARGS, char **callARGS) {
             ptr_callargs++;
       }
       if (*ptr_callargs != NULL)
-            return STATUS.SYNTAX_ERROR;
-      return STATUS.SUCCESS;
-}
-
-// include<...> || define ....
-int filterPrecompileOrder(FILE *stream, FILE *stream_out) {
-      char *token = malloc(BUFFSIZE * sizeof(char));
-      char *ptr = token;
-      while (isalnum(*ptr = ffgetc(stream)))
-            ptr++;
-      *ptr = TOKENS.ZERO_END;
-      if (strcmp(token, TOKENS.INCLUDE_ORDER) == 0) {
-            free(token);
-            char *file = getIncludeFile(stream);
-            return includeFile(file, stream_out);
-      }
-      if (strcmp(token, TOKENS.DEFINE) == 0) {
-            free(token);
-            char *name = getDefineVariable(stream);
-            char *value = getDefineValue(stream);
-            return addVariableAndValue(name, value);
-      }
-      return STATUS.SYNTAX_ERROR;
+            return SYNTAX_ERROR;
+      return SUCCESS;
 }
 
 // variable
@@ -277,7 +310,7 @@ int addVariableAndValue(char *VARIABLE, char *VALUE) {
       if (strchr(VARIABLE, TOKENS.OPEN_PARENTHESIS)) {
             if (strchr(VARIABLE, TOKENS.CLOSED_PARENTHESIS) == NULL) {
                   printf("error parentesis: %s\n", VARIABLE);
-                  return STATUS.SYNTAX_ERROR;
+                  return SYNTAX_ERROR;
             }
             tempVar->type = MACRO;
             char *args = malloc(sizeof(char) * BUFFSIZE);
@@ -293,28 +326,7 @@ int addVariableAndValue(char *VARIABLE, char *VALUE) {
       tempVar->name = strdup(VARIABLE);
       tempVar->value = strdup(VALUE);
       DEFINES[variableIndex++] = tempVar;
-      return STATUS.SUCCESS;
-}
-
-// namefile>
-char *getIncludeFile(FILE *stream) {
-      char *token = malloc(BUFFSIZE * sizeof(char));
-      char *ptr = token;
-      while ((*ptr = ffgetc(stream)) != TOKENS.INCLUDE_FIELD_CLOSED)
-            ptr++;
-      if (*ptr != TOKENS.INCLUDE_FIELD_CLOSED) {
-            // syntax error errorReport(error, line)
-      }
-      *ptr = TOKENS.ZERO_END;
-      return token;
-}
-
-// namefile.h
-int includeFile(char *file, FILE *stream_out) {
-      FILE *include_stream = fopen(file, "r");
-      precompile(include_stream);
-      free(file);
-      return STATUS.SUCCESS;
+      return SUCCESS;
 }
 
 char ffgetc(FILE *stream) {

@@ -7,22 +7,13 @@ BIN = bin/
 TESTS = test/
 TESTSBIN = test/bin/
 
-all:
-	$(CC) -o $(OUT) $(CFLAGS) -I $(INCLUDE) -c $(SRC)*.c
-
-
-readerTest: 
-	@$(CC) -o $(BIN)readerbin.o -c $(SRC)reader.c -I $(INCLUDE) $(CFLAGS)
-	@$(CC) -o $(TESTSBIN)readertest.o -c  $(TESTS)readertest.c $(CFLAGS)
-	@$(CC) -o $(TESTSBIN)reader $(BIN)readerbin.o $(TESTSBIN)readertest.o $(CFLAGS)
-	@chmod +x $(TESTSBIN)reader
-	@./$(TESTSBIN)reader
-	@if [ $$? -eq 0 ]; then echo "reader pass"; else echo "reader not pass"; fi
-
-tokenizerTest:
-	@$(CC) -o $(BIN)tokenizer.o -c $(SRC)tokenizer.c -I $(INCLUDE) $(CFLAGS)
-	@$(CC) -o $(TESTSBIN)tokenizertest.o -c  $(TESTS)tokenizertest.c $(CFLAGS)
-	@$(CC) -o $(TESTSBIN)tokenizer $(BIN)tokenizer.o $(TESTSBIN)tokenizertest.o $(CFLAGS)
-	@chmod +x $(TESTSBIN)tokenizer
-	@./$(TESTSBIN)tokenizer
+testIncludes:
+	@rm test/includes/results/*
+	@gcc src/precompiler.c test/includes/test.c -o test/includes/includes_test.o -I include -g -Wall 2> /dev/null
+	@./test/includes/includes_test.o > /dev/null
+	@for file in test/includes/results/*.pre; do \
+		mv "$$file" "$${file%.pre}.c";\
+		done
+	
+	@gcc -fsyntax-only test/includes/results/*.c 
 
