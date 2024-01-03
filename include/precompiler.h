@@ -4,6 +4,7 @@
 #include <stdio.h>
 int precompileAll(char **files, int nfiles, char *out_path);
 int precompileFile(char *file, char *out_path);
+char *prepareOutFileName(char *in_file, char *out_path);
 int precompile(FILE *stream, char *file_src_path);
 int findPrecompilerOrder(FILE *stream, char *file_src_path);
 int filterPrecompileOrder(FILE *stream, FILE *stream_out, char *file_src_path);
@@ -18,10 +19,10 @@ int resolveDefines(char *line);
 void getMacroName(char *src, char *nameMacro);
 void getMacroArgs(char *src, char *argsMacro);
 void getMacroArgsCall(char *pos, char *argsCallMacro);
-void getMacroID(char **dest, char *src);
+void getArrayMacroArgs(char **dest, char *src);
 int prepareMacro(char *dest, char **prototipeARGS, char **callARGS);
 
-char ffgetc(FILE *stream);
+int ffgetc(FILE *stream);
 void skipComments(FILE *stream, char *token, char *prevToken);
 void manageSpaces(FILE *stream, char *token, char *prevToken);
 
