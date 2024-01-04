@@ -1,3 +1,6 @@
+void utils();
+void removesomething();
+
 int sum(int a,int b);
 
 

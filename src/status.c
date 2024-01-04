@@ -2,6 +2,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+int nLines = 0;
+
 // la linea se calculara alla, pa que coincida
 void reportFileError(int nLine, char *file) {
       printf("Error line: %i Line, File: %s, no exists\n", nLine, file);

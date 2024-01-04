@@ -1,5 +1,8 @@
 int res(int a,int b);
 
+void utils();
+void removesomething();
+
 int sum(int a,int b);
 
 
