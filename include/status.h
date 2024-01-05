@@ -6,5 +6,5 @@ extern int nLines;
 enum STATUS { SUCCESS, FILE_NOT_EXISTS, SYNTAX_ERROR };
 void reportFileError(int nLine, char *file);
 void reportPrecompileSyntaxError(int nLine, char *extraInfo);
-
+void reportWarning(int nLine, char *extraInfo);
 #endif

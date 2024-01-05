@@ -3,6 +3,7 @@
 
 #include <stdio.h>
 
+char *ffgetcUntil(FILE *stream, char limit);
 void funputc(FILE *stream);
 int isBetweenQuotes(char *token, int lenght, char *line);
 

@@ -4,6 +4,9 @@
 #include <stdio.h>
 
 extern FILE *stream_out;
+extern int wrte;
+extern int openIfs;
+extern int ifwrt[];
 
 int precompileAll(char **files, int nfiles, char *out_path);
 int precompileFile(char *file, char *out_path);

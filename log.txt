@@ -1,5 +1,0 @@
-test/defines/results/main.c: En la función ‘main’:
-test/defines/results/main.c:4:11: error: ‘x’ no se declaró aquí (primer uso en esta función)
-    4 | int sum=((x)+(2));
-      |           ^
-test/defines/results/main.c:4:11: nota: cada identificador sin declarar se reporta sólo una vez para cada función en el que aparece

@@ -14,3 +14,8 @@ void reportPrecompileSyntaxError(int nLine, char *extraInfo) {
       printf("Error line; %i %s\n", nLine, extraInfo);
       exit(SYNTAX_ERROR);
 }
+
+void reportWarning(int nLine, char *extraInfo) {
+      printf("Warning: variable %s not exist but try undefine in line %i\n",
+             extraInfo, nLine);
+}

@@ -1,5 +1,8 @@
 #include "../include/pre_defines.h"
 #include "../include/pre_skeleton.h"
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 
 int variableIndex = 0;
 struct Define *DEFINES[MAXBUFFVARS];
@@ -9,6 +12,8 @@ int resolveDefines(char *line) {
       for (int i = 0; i < variableIndex && status == SUCCESS; i++) {
             char *pos;
             char *temp = malloc(sizeof(char) * BUFFSIZE);
+            if (DEFINES[i]->valid == INVALID)
+                  continue;
             if (DEFINES[i]->type == NORMAL) {
                   while (
                       (pos = strstr(ptr_line, DEFINES[i]->name)) != NULL &&
@@ -22,11 +27,10 @@ int resolveDefines(char *line) {
                         strcpy(line, temp);
                   }
             } else if (DEFINES[i]->type == MACRO) {
-                  char nameMacro[BUFFSIZE];
-                  getMacroName(nameMacro, DEFINES[i]->name);
-                  while ((pos = strstr(ptr_line, nameMacro)) != NULL &&
-                         status == SUCCESS &&
-                         !isBetweenQuotes(pos, strlen(nameMacro), line)) {
+                  while (
+                      (pos = strstr(ptr_line, DEFINES[i]->name)) != NULL &&
+                      status == SUCCESS &&
+                      !isBetweenQuotes(pos, strlen(DEFINES[i]->name), line)) {
                         char argsCallMacro[BUFFSIZE];
                         char **callARGS = malloc(sizeof(char *) * BUFFSIZE);
                         char *macro = malloc(sizeof(char) * BUFFSIZE);
@@ -39,8 +43,8 @@ int resolveDefines(char *line) {
 
                         char buffLine[BUFFSIZE];
                         int index_preMacro = pos - line;
-                        char *postMacro =
-                            pos + strlen(nameMacro) + strlen(argsCallMacro);
+                        char *postMacro = pos + strlen(DEFINES[i]->name) +
+                                          strlen(argsCallMacro);
 
                         snprintf(buffLine, BUFFSIZE, "%.*s%s%s", index_preMacro,
                                  line, macro, postMacro);
@@ -162,11 +166,16 @@ int addVariableAndValue(char *VARIABLE, char *VALUE) {
             }
             char *args = malloc(sizeof(char) * BUFFSIZE);
             char **arrayArgs = malloc(sizeof(char *));
+            char *nameMacro = malloc(sizeof(char) * BUFFSIZE);
             getMacroArgs(args, VARIABLE);
             getArrayMacroArgs(arrayArgs, args);
+            getMacroName(nameMacro, VARIABLE);
+
             tempVar->type = MACRO;
+            tempVar->name = nameMacro;
             tempVar->ARGS = arrayArgs;
       } else {
+            tempVar->name = strdup(VARIABLE);
             tempVar->type = NORMAL;
       }
       if (VALUE[0] == TOKENS.ZERO_END) {
@@ -179,16 +188,37 @@ int addVariableAndValue(char *VARIABLE, char *VALUE) {
       } else {
             tempVar->value = strdup(VALUE);
       }
-      tempVar->name = strdup(VARIABLE);
+      tempVar->valid = VALID;
       DEFINES[variableIndex++] = tempVar;
       return SUCCESS;
+}
+
+int undefVar(const char *VARIABLE) {
+      int undefined = 0;
+      if (existsVar(VARIABLE)) {
+            for (int i = 0; i < variableIndex && !undefined; i++) {
+                  if (strcmp(VARIABLE, DEFINES[i]->name) == 0) {
+                        DEFINES[i]->valid = INVALID;
+                        undefined = 1;
+                  }
+            }
+      }
+      return undefined;
 }
 
 int existsVar(const char *VARIABLE) {
       int exists = 0;
       for (int i = 0; i < variableIndex && !exists; i++) {
+            printf("consulta: |%s| defines: |%s|", VARIABLE, DEFINES[i]->name);
             if (strcmp(VARIABLE, DEFINES[i]->name) == 0)
                   exists = 1;
       }
       return exists;
+}
+
+void clearDefines() {
+      for (int i = 0; i < variableIndex; i++) {
+            DEFINES[i] = NULL;
+      }
+      variableIndex = 0;
 }

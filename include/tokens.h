@@ -19,6 +19,8 @@ struct Token {
       const char *IFDEF;
       const char *IFNDEF;
       const char *ENDIF;
+      const char *ELSE;
+      const char *UNDEF;
 };
 extern struct Token TOKENS;
 #endif

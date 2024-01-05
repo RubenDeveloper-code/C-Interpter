@@ -73,6 +73,7 @@
 !_TAG_ROLE_DESCRIPTION!Sh!heredoc	endmarker	/end marker/
 !_TAG_ROLE_DESCRIPTION!Sh!script	loaded	/loaded/
 ALL_PRECOMPILER_SRC	Makefile	/^ALL_PRECOMPILER_SRC = src\/precompiler.c src\/pre_conditional.c src\/pre_defines.c src\/pre_fget/;"	m
+AMLOA	test/conditions/fortest/main.c	/^#define AMLOA$/;"	d	file:
 ARGS	include/pre_defines.h	/^      char **ARGS;$/;"	m	struct:Define	typeref:typename:char **
 ARGS	test/defines/fortest/somemacros.h	/^#define ARGS /;"	d
 ASTERISK	include/tokens.h	/^      const char ASTERISK;$/;"	m	struct:Token	typeref:typename:const char
@@ -85,15 +86,20 @@ COMA	include/tokens.h	/^      const char COMA;$/;"	m	struct:Token	typeref:typena
 DEFINE	include/tokens.h	/^      const char *DEFINE;$/;"	m	struct:Token	typeref:typename:const char *
 DEFINES	src/pre_defines.c	/^struct Define *DEFINES[MAXBUFFVARS];$/;"	v	typeref:struct:Define * []
 Define	include/pre_defines.h	/^struct Define {$/;"	s
+ELSE	include/tokens.h	/^      const char *ELSE;$/;"	m	struct:Token	typeref:typename:const char *
 ENDIF	include/tokens.h	/^      const char *ENDIF;$/;"	m	struct:Token	typeref:typename:const char *
 END_LINE	include/tokens.h	/^      const char END_LINE;$/;"	m	struct:Token	typeref:typename:const char
 FILE_NOT_EXISTS	include/status.h	/^enum STATUS { SUCCESS, FILE_NOT_EXISTS, SYNTAX_ERROR };$/;"	e	enum:STATUS
+HOLA	test/conditions/fortest/main.c	/^#define HOLA$/;"	d	file:
+HOLA	test/includes/fortest/sum.h	/^#define HOLA /;"	d
 IFDEF	include/tokens.h	/^      const char *IFDEF;$/;"	m	struct:Token	typeref:typename:const char *
 IFNDEF	include/tokens.h	/^      const char *IFNDEF;$/;"	m	struct:Token	typeref:typename:const char *
 INCLUDE	Makefile	/^INCLUDE = include\/$/;"	m
 INCLUDE_FIELD_CLOSED	include/tokens.h	/^      const char INCLUDE_FIELD_CLOSED;$/;"	m	struct:Token	typeref:typename:const char
 INCLUDE_FIELD_OPEN	include/tokens.h	/^      const char INCLUDE_FIELD_OPEN;$/;"	m	struct:Token	typeref:typename:const char
 INCLUDE_ORDER	include/tokens.h	/^      const char *INCLUDE_ORDER;$/;"	m	struct:Token	typeref:typename:const char *
+INVALID	include/pre_defines.h	/^#define INVALID /;"	d
+JUDAS	test/conditions/fortest/main.c	/^#define JUDAS$/;"	d	file:
 MACRO	include/pre_defines.h	/^enum TYPE { NORMAL, MACRO };$/;"	e	enum:TYPE
 MAXBUFFVARS	include/pre_defines.h	/^#define MAXBUFFVARS /;"	d
 NONE	test/defines/fortest/somemacros.h	/^#define NONE$/;"	d
@@ -111,12 +117,15 @@ SUCCESS	include/status.h	/^enum STATUS { SUCCESS, FILE_NOT_EXISTS, SYNTAX_ERROR 
 SYNTAX_ERROR	include/status.h	/^enum STATUS { SUCCESS, FILE_NOT_EXISTS, SYNTAX_ERROR };$/;"	e	enum:STATUS
 TESTS	Makefile	/^TESTS = test\/$/;"	m
 TESTSBIN	Makefile	/^TESTSBIN = test\/bin\/$/;"	m
+TEST_CONDITIONS_DIR	Makefile	/^TEST_CONDITIONS_DIR = test\/conditions$/;"	m
 TEST_DEFINES_DIR	Makefile	/^TEST_DEFINES_DIR = test\/defines$/;"	m
 TEST_INCLUDES_DIR	Makefile	/^TEST_INCLUDES_DIR = test\/includes$/;"	m
-TOKENS	src/tokens.c	/^struct Token TOKENS = {' ', '"',  ',',      '\/',     '(',      ')',$/;"	v	typeref:struct:Token
+TOKENS	src/tokens.c	/^struct Token TOKENS = {' ',     '"',       ',',     '\/',    '(',$/;"	v	typeref:struct:Token
 TYPE	include/pre_defines.h	/^enum TYPE { NORMAL, MACRO };$/;"	g
 Token	include/tokens.h	/^struct Token {$/;"	s
+UNDEF	include/tokens.h	/^      const char *UNDEF;$/;"	m	struct:Token	typeref:typename:const char *
 UNDERSCORE	include/tokens.h	/^      const char UNDERSCORE;$/;"	m	struct:Token	typeref:typename:const char
+VALID	include/pre_defines.h	/^#define VALID /;"	d
 ZERO_END	include/tokens.h	/^      const char ZERO_END;$/;"	m	struct:Token	typeref:typename:const char
 _MAX_	test/defines/fortest/somemacros.h	/^#define _MAX_(/;"	d
 _POSIX1_SOURCE	include/pre_skeleton.h	/^#define _POSIX1_SOURCE /;"	d
@@ -132,10 +141,14 @@ __PRE_INCLUDES_H__	include/pre_includes.h	/^#define __PRE_INCLUDES_H__$/;"	d
 __PRE_UTILS_H__	include/pre_utils.h	/^#define __PRE_UTILS_H__$/;"	d
 __TOKENS_H__	include/tokens.h	/^#define __TOKENS_H__$/;"	d
 addVariableAndValue	src/pre_defines.c	/^int addVariableAndValue(char *VARIABLE, char *VALUE) {$/;"	f	typeref:typename:int
-applyIsdef	src/pre_conditional.c	/^int applyIsdef(FILE *stream, int ifn) {$/;"	f	typeref:typename:int
-evaluateIsdef	src/pre_conditional.c	/^int evaluateIsdef(FILE *stream) {$/;"	f	typeref:typename:int
+adios	test/conditions/fortest/main.c	/^char *adios = "Te digo adios desde un segundo nivel (IFDEF IFNDEF)";$/;"	v	typeref:typename:char *
+alsedios	test/conditions/fortest/main.c	/^char *alsedios = "Te dios adios desde segundo nivel else waos";$/;"	v	typeref:typename:char *
+amlo	test/conditions/fortest/main.c	/^char *amlo = "->NO EJTOY DEFIIIINIDO";$/;"	v	typeref:typename:char *
+amlo	test/conditions/fortest/main.c	/^char *amlo = "HAY ESTAN LAJ MAJACRES JEJEJEJE";$/;"	v	typeref:typename:char *
+clearDefines	src/pre_defines.c	/^void clearDefines() {$/;"	f	typeref:typename:void
 existsVar	src/pre_defines.c	/^int existsVar(const char *VARIABLE) {$/;"	f	typeref:typename:int
 ffgetc	src/pre_fgetc.c	/^int ffgetc(FILE *stream) {$/;"	f	typeref:typename:int
+ffgetcUntil	src/pre_utils.c	/^char *ffgetcUntil(FILE *stream, char limit) {$/;"	f	typeref:typename:char *
 filterPrecompileOrder	src/precompiler.c	/^int filterPrecompileOrder(FILE *stream, FILE *stream_out, char *file_src_path) {$/;"	f	typeref:typename:int
 funputc	src/pre_utils.c	/^void funputc(FILE *stream) {$/;"	f	typeref:typename:void
 getArrayMacroArgs	src/pre_defines.c	/^void getArrayMacroArgs(char **dest, char *src) {$/;"	f	typeref:typename:void
@@ -145,8 +158,14 @@ getIncludeFile	src/pre_includes.c	/^char *getIncludeFile(FILE *stream) {$/;"	f	t
 getMacroArgs	src/pre_defines.c	/^void getMacroArgs(char *argsMacro, char *src) {$/;"	f	typeref:typename:void
 getMacroArgsCall	src/pre_defines.c	/^void getMacroArgsCall(char *argsCallMacro, char *pos) {$/;"	f	typeref:typename:void
 getMacroName	src/pre_defines.c	/^void getMacroName(char *nameMacro, char *src) {$/;"	f	typeref:typename:void
+hola	test/conditions/fortest/main.c	/^char *hola = "Estoy dentro de un bloque ifdef HOLA";$/;"	v	typeref:typename:char *
+holse	test/conditions/fortest/main.c	/^char *holse = "->Estoy dentro de un bloque ifdef HOLA else ";$/;"	v	typeref:typename:char *
+ifwrt	src/precompiler.c	/^int ifwrt[2048];$/;"	v	typeref:typename:int[2048]
 includeFile	src/pre_includes.c	/^int includeFile(char *file, FILE *stream_out, char *path_src) {$/;"	f	typeref:typename:int
 isBetweenQuotes	src/pre_utils.c	/^int isBetweenQuotes(char *token, int lenght, char *line) {$/;"	f	typeref:typename:int
+isDefined	src/pre_conditional.c	/^int isDefined(char *token) { return existsVar(token); }$/;"	f	typeref:typename:int
+judas	test/conditions/fortest/main.c	/^char *judas = "->thiiiiiiiiiiiiiiiiiiiiiiiiis iiiiiiiiiiiis the pain ki ller";$/;"	v	typeref:typename:char *
+main	test/conditions/conditionstest.c	/^int main() {$/;"	f	typeref:typename:int
 main	test/defines/definestest.c	/^int main() {$/;"	f	typeref:typename:int
 main	test/defines/fortest/main.c	/^int main(ARGS) {$/;"	f	typeref:typename:int
 main	test/defines/results/main.c	/^int main(int argc,char*argv[]){$/;"	f	typeref:typename:int
@@ -154,9 +173,9 @@ main	test/includes/fortest/main.c	/^int main() {$/;"	f	typeref:typename:int
 main	test/includes/results/main.c	/^int main(){$/;"	f	typeref:typename:int
 main	test/includes/test.c	/^int main() {$/;"	f	typeref:typename:int
 manageSpaces	src/pre_fgetc.c	/^void manageSpaces(FILE *stream, char *token, char *prevToken) {$/;"	f	typeref:typename:void
-nLines	src/pre_includes.c	/^int nLines;$/;"	v	typeref:typename:int
 nLines	src/status.c	/^int nLines = 0;$/;"	v	typeref:typename:int
 name	include/pre_defines.h	/^      char *name;$/;"	m	struct:Define	typeref:typename:char *
+openIfs	src/precompiler.c	/^int openIfs = -1;$/;"	v	typeref:typename:int
 precompile	src/precompiler.c	/^int precompile(FILE *stream, char *path_src) {$/;"	f	typeref:typename:int
 precompileAll	src/precompiler.c	/^int precompileAll(char *files[], int nfiles, char *out_path) {$/;"	f	typeref:typename:int
 precompileFile	src/precompiler.c	/^int precompileFile(char *file, char *out_path) {$/;"	f	typeref:typename:int
@@ -164,18 +183,23 @@ prepareMacro	src/pre_defines.c	/^int prepareMacro(char *dest, char **prototipeAR
 prepareOutFileName	src/precompiler.c	/^char *prepareOutFileName(char *in_file, char *out_path) {$/;"	f	typeref:typename:char *
 reportFileError	src/status.c	/^void reportFileError(int nLine, char *file) {$/;"	f	typeref:typename:void
 reportPrecompileSyntaxError	src/status.c	/^void reportPrecompileSyntaxError(int nLine, char *extraInfo) {$/;"	f	typeref:typename:void
+reportWarning	src/status.c	/^void reportWarning(int nLine, char *extraInfo) {$/;"	f	typeref:typename:void
 res	test/includes/fortest/res.c	/^int res(int a, int b) { return a + b; }$/;"	f	typeref:typename:int
 res	test/includes/results/res.c	/^int res(int a,int b){return a+b;}$/;"	f	typeref:typename:int
 resolveDefines	src/pre_defines.c	/^int resolveDefines(char *line) {$/;"	f	typeref:typename:int
 skipComments	src/pre_fgetc.c	/^void skipComments(FILE *stream, char *token, char *prevToken) {$/;"	f	typeref:typename:void
-stream_out	include/precompiler.h	/^FILE *stream_out;$/;"	v	typeref:typename:FILE *
-stream_out	src/pre_includes.c	/^FILE *stream_out;$/;"	v	typeref:typename:FILE *
 stream_out	src/precompiler.c	/^FILE *stream_out;$/;"	v	typeref:typename:FILE *
 sum	test/includes/fortest/sum.c	/^int sum(int a, int b) { return a + b; }$/;"	f	typeref:typename:int
 sum	test/includes/results/sum.c	/^int sum(int a,int b){return a+b;}$/;"	f	typeref:typename:int
+testConditions	Makefile	/^testConditions:$/;"	t
 testDefines	Makefile	/^testDefines:$/;"	t
 testIncludes	Makefile	/^testIncludes:$/;"	t
-tests	Makefile	/^tests: testIncludes testDefines$/;"	t
+tests	Makefile	/^tests: testIncludes testDefines testConditions$/;"	t
+texto	test/conditions/fortest/main.c	/^char *texto = "soy texto independiente a los bloques, si no me ves preocupate";$/;"	v	typeref:typename:char *
+textos	test/conditions/fortest/main.c	/^char *textos = "->hola soy la cabecera del codigo, preocupate si no estoy";$/;"	v	typeref:typename:char *
 type	include/pre_defines.h	/^      enum TYPE type;$/;"	m	struct:Define	typeref:enum:TYPE
+undefVar	src/pre_defines.c	/^int undefVar(const char *VARIABLE) {$/;"	f	typeref:typename:int
+valid	include/pre_defines.h	/^      int valid;$/;"	m	struct:Define	typeref:typename:int
 value	include/pre_defines.h	/^      char *value;$/;"	m	struct:Define	typeref:typename:char *
 variableIndex	src/pre_defines.c	/^int variableIndex = 0;$/;"	v	typeref:typename:int
+wrte	src/precompiler.c	/^int wrte = 1;$/;"	v	typeref:typename:int

@@ -3,7 +3,6 @@
 
 #include <stdio.h>
 
-int evaluateIsdef(FILE *stream);
-int applyIsdef(FILE *stream, int ifn);
+int isDefined(char *token);
 
 #endif

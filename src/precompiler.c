@@ -3,14 +3,21 @@
 #include "../include/pre_defines.h"
 #include "../include/pre_includes.h"
 #include "../include/pre_skeleton.h"
+#include <string.h>
 
 // Separando ando
 //   TODO: ifdef, ifndef, endif
 FILE *stream_out;
+int wrte = 1;
+int openIfs = -1;
+int ifwrt[2048];
 
 int precompileAll(char *files[], int nfiles, char *out_path) {
+      // limpiar variables, reiniciar conteo de lineas
       char **ptr = files;
       while (nfiles-- > 0) {
+            nLines = 0;
+            clearDefines();
             printf("archivo a precopilar: %i\n", nfiles + 1);
             int status = precompileFile(*ptr++, out_path);
             if (status != SUCCESS)
@@ -61,13 +68,13 @@ int precompile(FILE *stream, char *path_src) {
             analyze = ((token == TOKENS.QUOTES) ? !analyze : analyze);
             if (analyze && token == TOKENS.PRECOMPILE_ORDER) {
                   status = filterPrecompileOrder(stream, stream_out, path_src);
-            } else if (token == TOKENS.END_LINE || token == TOKENS.ZERO_END) {
+            } else if ((token == TOKENS.END_LINE || token == TOKENS.ZERO_END)) {
                   *ptr++ = TOKENS.END_LINE;
                   *ptr = TOKENS.ZERO_END;
                   status = resolveDefines(BUFF);
                   fputs(BUFF, stream_out);
                   ptr = BUFF;
-            } else {
+            } else if (wrte) {
                   *ptr++ = token;
             }
       }
@@ -82,14 +89,45 @@ int filterPrecompileOrder(FILE *stream, FILE *stream_out, char *file_src_path) {
       while (isalnum(*ptr = ffgetc(stream)))
             ptr++;
       *ptr = TOKENS.ZERO_END;
-      if (strcmp(token, TOKENS.INCLUDE_ORDER) == 0) {
+      if (wrte && strcmp(token, TOKENS.INCLUDE_ORDER) == 0) {
             char *file = getIncludeFile(stream);
             status = includeFile(file, stream_out, file_src_path);
-      } else if (strcmp(token, TOKENS.DEFINE) == 0) {
+      } else if (wrte && strcmp(token, TOKENS.DEFINE) == 0) {
             char *name = getDefineVariable(stream);
             char *value = getDefineValue(stream);
             status = addVariableAndValue(name, value);
       } else if (strcmp(token, TOKENS.IFDEF) == 0) {
+            if (wrte)
+                  wrte = isDefined(ffgetcUntil(stream, TOKENS.END_LINE));
+            ifwrt[++openIfs] = wrte;
+      } else if (strcmp(token, TOKENS.IFNDEF) == 0) {
+            if (wrte)
+                  wrte = !isDefined(ffgetcUntil(stream, TOKENS.END_LINE));
+            ifwrt[++openIfs] = wrte;
+      } else if (strcmp(token, TOKENS.ELSE) == 0) {
+            if (openIfs > 0) { // hay otro nivel
+                  wrte = ifwrt[openIfs] = ifwrt[openIfs - 1] && !wrte;
+            } else if (openIfs == 0) {
+                  wrte = !wrte;
+                  ifwrt[openIfs] = wrte;
+            } else {
+                  reportPrecompileSyntaxError(nLines, "#ELSE sin if");
+            }
+      } else if (strcmp(token, TOKENS.ENDIF) == 0) {
+            if (openIfs > 0) { // hay otro nivel
+                  wrte = ifwrt[openIfs - 1];
+            } else if (openIfs == 0) {
+                  wrte = 1;
+            } else {
+                  reportPrecompileSyntaxError(nLines, "#ENDIF sin if");
+            }
+            openIfs--;
+      } else if (strcmp(token, TOKENS.UNDEF) == 0) {
+            if (undefVar(ffgetcUntil(stream, TOKENS.END_LINE))) {
+                  status = SUCCESS;
+            } else {
+                  reportWarning(nLines, token);
+            }
       }
       free(token);
       return status;
