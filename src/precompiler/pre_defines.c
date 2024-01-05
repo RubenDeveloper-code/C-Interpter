@@ -1,5 +1,5 @@
-#include "../include/pre_defines.h"
-#include "../include/pre_skeleton.h"
+#include "../../include/precompiler/pre_defines.h"
+#include "../../include/precompiler/pre_skeleton.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -117,7 +117,7 @@ int prepareMacro(char *dest, char **prototipeARGS, char **callARGS) {
             ptr_callargs++;
       }
       if (*ptr_callargs != NULL && *callARGS != NULL) {
-            status = SYNTAX_ERROR;
+            reportFatalError(nLines, SYNTAX_ERROR, "args not be resolved");
       }
       return status;
 }
@@ -162,7 +162,8 @@ int addVariableAndValue(char *VARIABLE, char *VALUE) {
       struct Define *tempVar = malloc(sizeof(struct Define));
       if (strchr(VARIABLE, TOKENS.OPEN_PARENTHESIS)) {
             if (strchr(VARIABLE, TOKENS.CLOSED_PARENTHESIS) == NULL) {
-                  reportPrecompileSyntaxError(nLines, "parentesis no cerrado");
+                  reportFatalError(nLines, SYNTAX_ERROR,
+                                   "Parenthesis not closed");
             }
             char *args = malloc(sizeof(char) * BUFFSIZE);
             char **arrayArgs = malloc(sizeof(char *));
@@ -182,8 +183,7 @@ int addVariableAndValue(char *VARIABLE, char *VALUE) {
             if (tempVar->type == NORMAL) {
                   tempVar->value = " ";
             } else {
-                  reportPrecompileSyntaxError(
-                      nLines, "Macro con argumentos debe hacer algo");
+                  reportFatalError(nLines, SYNTAX_ERROR, "Macro its empty");
             }
       } else {
             tempVar->value = strdup(VALUE);
@@ -210,7 +210,8 @@ int existsVar(const char *VARIABLE) {
       int exists = 0;
       for (int i = 0; i < variableIndex && !exists; i++) {
             printf("consulta: |%s| defines: |%s|", VARIABLE, DEFINES[i]->name);
-            if (strcmp(VARIABLE, DEFINES[i]->name) == 0)
+            if (strcmp(VARIABLE, DEFINES[i]->name) == 0 &&
+                DEFINES[i]->valid == VALID)
                   exists = 1;
       }
       return exists;

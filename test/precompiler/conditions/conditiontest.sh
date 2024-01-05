@@ -1,6 +1,6 @@
 #!/bin/bash
 
-DIR="test/conditions"
+DIR="test/precompiler/conditions"
 
 cat /dev/null >"$DIR/log.txt"
 

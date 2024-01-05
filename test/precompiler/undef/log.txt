@@ -1,0 +1,7 @@
+test/precompiler/undef/results/main.c:2:1: aviso: la definición de datos no tiene tipo o clase de almacenamiento
+    2 | HOLA;
+      | ^~~~
+test/precompiler/undef/results/main.c:2:1: aviso: el tipo de dato por defecto es ‘int’ en la declaración de ‘HOLA’ [-Wimplicit-int]
+test/precompiler/undef/results/main.c:3:1: error: expected identifier or ‘(’ before numeric constant
+    3 | 321;
+      | ^~~

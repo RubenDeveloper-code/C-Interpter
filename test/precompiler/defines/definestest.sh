@@ -1,16 +1,16 @@
 #!/bin/bash
 
-DIR="test/includes"
+DIR="test/precompiler/defines"
 
 cat /dev/null >"$DIR/log.txt"
 
 rm $DIR/results/* 2>/dev/null
-./$DIR/includes_test.o >/dev/null
+./$DIR/defines_test.o >/dev/null
 
 OUT=$?
 
 if [ $OUT -ne 0 ]; then
-	echo "#include -> test fail, error code: $OUT"
+	echo "##define -> test fail, error code: $OUT"
 	exit 1
 fi
 
@@ -21,10 +21,10 @@ done
 gcc -fsyntax-only $DIR/results/*.c &>$DIR/log.txt
 
 if grep -- '-Wimplicit-function-declaration' $DIR/log.txt &>/dev/null; then
-	echo "##include -> test fail: -Wimplicit-function-declaration"
+	echo "##define -> test fail: -Wimplicit-function-declaration"
 	cat $DIR/results/*
 elif grep 'error:' $DIR/log.txt; then
-	echo "##include -> test fail: error"
+	echo "##define -> test fail: error"
 else
-	echo ">include -> test pass"
+	echo ">define -> test pass"
 fi

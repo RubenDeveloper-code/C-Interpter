@@ -1,8 +1,8 @@
-#include "../include/precompiler.h"
-#include "../include/pre_conditional.h"
-#include "../include/pre_defines.h"
-#include "../include/pre_includes.h"
-#include "../include/pre_skeleton.h"
+#include "../../include/precompiler/precompiler.h"
+#include "../../include/precompiler/pre_conditional.h"
+#include "../../include/precompiler/pre_defines.h"
+#include "../../include/precompiler/pre_includes.h"
+#include "../../include/precompiler/pre_skeleton.h"
 #include <string.h>
 
 // Separando ando
@@ -38,6 +38,8 @@ int precompileFile(char *file, char *out_path) {
             char end_path[] = {TOKENS.SLASH, TOKENS.ZERO_END};
             strcat(dir, end_path);
             status = precompile(stream, dir);
+      } else {
+            reportFatalError(nLines, FILE_NO_EXISTS, file);
       }
       fclose(stream);
       return status;
@@ -66,7 +68,7 @@ int precompile(FILE *stream, char *path_src) {
       char token;
       while ((token = ffgetc(stream)) != EOF && status == SUCCESS) {
             analyze = ((token == TOKENS.QUOTES) ? !analyze : analyze);
-            if (analyze && token == TOKENS.PRECOMPILE_ORDER) {
+            if (analyze && token == TOKENS_PRECOMPILER.PRECOMPILE_ORDER) {
                   status = filterPrecompileOrder(stream, stream_out, path_src);
             } else if ((token == TOKENS.END_LINE || token == TOKENS.ZERO_END)) {
                   *ptr++ = TOKENS.END_LINE;
@@ -89,44 +91,47 @@ int filterPrecompileOrder(FILE *stream, FILE *stream_out, char *file_src_path) {
       while (isalnum(*ptr = ffgetc(stream)))
             ptr++;
       *ptr = TOKENS.ZERO_END;
-      if (wrte && strcmp(token, TOKENS.INCLUDE_ORDER) == 0) {
+      if (wrte && strcmp(token, TOKENS_PRECOMPILER.INCLUDE_ORDER) == 0) {
             char *file = getIncludeFile(stream);
             status = includeFile(file, stream_out, file_src_path);
-      } else if (wrte && strcmp(token, TOKENS.DEFINE) == 0) {
+      } else if (wrte && strcmp(token, TOKENS_PRECOMPILER.DEFINE) == 0) {
             char *name = getDefineVariable(stream);
             char *value = getDefineValue(stream);
             status = addVariableAndValue(name, value);
-      } else if (strcmp(token, TOKENS.IFDEF) == 0) {
+      } else if (strcmp(token, TOKENS_PRECOMPILER.IFDEF) == 0) {
             if (wrte)
                   wrte = isDefined(ffgetcUntil(stream, TOKENS.END_LINE));
             ifwrt[++openIfs] = wrte;
-      } else if (strcmp(token, TOKENS.IFNDEF) == 0) {
+      } else if (strcmp(token, TOKENS_PRECOMPILER.IFNDEF) == 0) {
             if (wrte)
                   wrte = !isDefined(ffgetcUntil(stream, TOKENS.END_LINE));
             ifwrt[++openIfs] = wrte;
-      } else if (strcmp(token, TOKENS.ELSE) == 0) {
+      } else if (strcmp(token, TOKENS_PRECOMPILER.ELSE) == 0) {
             if (openIfs > 0) { // hay otro nivel
                   wrte = ifwrt[openIfs] = ifwrt[openIfs - 1] && !wrte;
             } else if (openIfs == 0) {
                   wrte = !wrte;
                   ifwrt[openIfs] = wrte;
             } else {
-                  reportPrecompileSyntaxError(nLines, "#ELSE sin if");
+                  reportFatalError(nLines, SYNTAX_ERROR,
+                                   "ELSE without any oppened IFXXX");
             }
-      } else if (strcmp(token, TOKENS.ENDIF) == 0) {
+      } else if (strcmp(token, TOKENS_PRECOMPILER.ENDIF) == 0) {
             if (openIfs > 0) { // hay otro nivel
                   wrte = ifwrt[openIfs - 1];
             } else if (openIfs == 0) {
                   wrte = 1;
             } else {
-                  reportPrecompileSyntaxError(nLines, "#ENDIF sin if");
+                  reportFatalError(nLines, SYNTAX_ERROR,
+                                   "ENDIF without any oppened IFXXX");
             }
             openIfs--;
-      } else if (strcmp(token, TOKENS.UNDEF) == 0) {
-            if (undefVar(ffgetcUntil(stream, TOKENS.END_LINE))) {
+      } else if (strcmp(token, TOKENS_PRECOMPILER.UNDEF) == 0) {
+            char *namevar = ffgetcUntil(stream, TOKENS.END_LINE);
+            if (undefVar(namevar)) {
                   status = SUCCESS;
             } else {
-                  reportWarning(nLines, token);
+                  reportFatalError(nLines, DEFINE_NOT_EXISTS, namevar);
             }
       }
       free(token);

@@ -1,6 +1,6 @@
-#include "../include/pre_fgetc.h"
-#include "../include/pre_skeleton.h"
-#include "../include/precompiler.h"
+#include "../../include/precompiler/pre_fgetc.h"
+#include "../../include/precompiler/pre_skeleton.h"
+#include "../../include/precompiler/precompiler.h"
 
 int ffgetc(FILE *stream) {
       static char prevToken;

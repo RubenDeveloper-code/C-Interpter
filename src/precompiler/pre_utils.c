@@ -1,5 +1,5 @@
-#include "../include/pre_utils.h"
-#include "../include/pre_skeleton.h"
+#include "../../include/precompiler/pre_utils.h"
+#include "../../include/precompiler/pre_skeleton.h"
 #include <stdio.h>
 #include <stdlib.h>
 
