@@ -70,8 +70,9 @@ int precompile(FILE *stream, char *path_src) {
             analyze = ((token == TOKENS.QUOTES) ? !analyze : analyze);
             if (analyze && token == TOKENS_PRECOMPILER.PRECOMPILE_ORDER) {
                   status = filterPrecompileOrder(stream, stream_out, path_src);
-            } else if ((token == TOKENS.END_LINE || token == TOKENS.ZERO_END)) {
-                  *ptr++ = TOKENS.END_LINE;
+            } else if ((token == TOKENS.JUMP_LINE ||
+                        token == TOKENS.ZERO_END)) {
+                  *ptr++ = TOKENS.JUMP_LINE;
                   *ptr = TOKENS.ZERO_END;
                   status = resolveDefines(BUFF);
                   fputs(BUFF, stream_out);
@@ -100,11 +101,11 @@ int filterPrecompileOrder(FILE *stream, FILE *stream_out, char *file_src_path) {
             status = addVariableAndValue(name, value);
       } else if (strcmp(token, TOKENS_PRECOMPILER.IFDEF) == 0) {
             if (wrte)
-                  wrte = isDefined(ffgetcUntil(stream, TOKENS.END_LINE));
+                  wrte = isDefined(ffgetcUntil(stream, TOKENS.JUMP_LINE));
             ifwrt[++openIfs] = wrte;
       } else if (strcmp(token, TOKENS_PRECOMPILER.IFNDEF) == 0) {
             if (wrte)
-                  wrte = !isDefined(ffgetcUntil(stream, TOKENS.END_LINE));
+                  wrte = !isDefined(ffgetcUntil(stream, TOKENS.JUMP_LINE));
             ifwrt[++openIfs] = wrte;
       } else if (strcmp(token, TOKENS_PRECOMPILER.ELSE) == 0) {
             if (openIfs > 0) { // hay otro nivel
@@ -127,7 +128,7 @@ int filterPrecompileOrder(FILE *stream, FILE *stream_out, char *file_src_path) {
             }
             openIfs--;
       } else if (strcmp(token, TOKENS_PRECOMPILER.UNDEF) == 0) {
-            char *namevar = ffgetcUntil(stream, TOKENS.END_LINE);
+            char *namevar = ffgetcUntil(stream, TOKENS.JUMP_LINE);
             if (undefVar(namevar)) {
                   status = SUCCESS;
             } else {

@@ -128,12 +128,12 @@ char *getDefineVariable(FILE *stream) {
       char *ptr = token;
       char LIMIT_TOKEN = TOKENS.SPACE;
       while ((*ptr = fgetc(stream)) != LIMIT_TOKEN && *ptr != TOKENS.QUOTES &&
-             *ptr != TOKENS.END_LINE) {
+             *ptr != TOKENS.JUMP_LINE) {
             if (*ptr == TOKENS.OPEN_PARENTHESIS)
                   LIMIT_TOKEN = TOKENS.CLOSED_PARENTHESIS;
             ptr++;
       }
-      if (*ptr == TOKENS.QUOTES || *ptr == TOKENS.END_LINE)
+      if (*ptr == TOKENS.QUOTES || *ptr == TOKENS.JUMP_LINE)
             ungetc(*ptr, stream);
       if (*ptr == TOKENS.CLOSED_PARENTHESIS)
             ptr++;
@@ -152,7 +152,7 @@ char *getDefineValue(FILE *stream) {
             getter = ffgetc;
       }
       ungetc(test, stream);
-      while ((*ptr = getter(stream)) != TOKENS.END_LINE)
+      while ((*ptr = getter(stream)) != TOKENS.JUMP_LINE)
             ptr++;
       *ptr = TOKENS.ZERO_END;
       return token;

@@ -7,7 +7,7 @@ int ffgetc(FILE *stream) {
       char token = fgetc(stream);
       skipComments(stream, &token, &prevToken);
       manageSpaces(stream, &token, &prevToken);
-      if (token == TOKENS.END_LINE) {
+      if (token == TOKENS.JUMP_LINE) {
             nLines++;
       }
       prevToken = token;
@@ -17,7 +17,7 @@ int ffgetc(FILE *stream) {
 // simple y multilinea...
 void skipComments(FILE *stream, char *token, char *prevToken) {
       if (*token == TOKENS.SLASH && *prevToken == TOKENS.SLASH) {
-            while ((*token = fgetc(stream)) != TOKENS.END_LINE)
+            while ((*token = fgetc(stream)) != TOKENS.JUMP_LINE)
                   ;
             funputc(stream_out);
             *token = fgetc(stream);
