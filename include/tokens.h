@@ -14,6 +14,7 @@ struct Token {
       const char END_LINE;
       const char BRACKET_OPEN;
       const char BRACKET_CLOSED;
+      const char EQUAL;
 };
 extern struct Token TOKENS;
 #endif

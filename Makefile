@@ -17,6 +17,8 @@ ALL_PRECOMPILER_SRC = src/precompiler/precompiler.c \
 		      src/precompiler/pre_status.c
 TOKENS = src/tokens.c
 
+ALL_AST_SRC = src/asttree/*
+
 
 tests: testIncludes testDefines testConditions testUndef
 
@@ -40,3 +42,9 @@ TEST_UNDEF_DIR = test/precompiler/undef
 testUndef:
 	@gcc $(ALL_PRECOMPILER_SRC) $(STATUSCHECK) $(TOKENS) $(TEST_UNDEF_DIR)/testundef.c -o $(TEST_UNDEF_DIR)/undef_test.o -I $(INCLUDE) -g -Wall
 	@test/precompiler/undef/testundef.sh
+
+TEST_DECL_DIR = test/astTree/declare
+testASTDecl:
+	@gcc $(ALL_AST_SRC) $(TOKENS) $(TEST_DECL_DIR)/testdecl.c -o $(TEST_DECL_DIR)/decl_test.o -I $(INCLUDE) -g -Wall
+	./test/astTree/declare/decl_test.o
+
