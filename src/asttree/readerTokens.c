@@ -31,7 +31,7 @@ char *getToken(char *line, int typeRead, int indexStart) {
 int getNTokens(char *line) {
       char *ptr_line = line;
       int cont = 0;
-      while (*line++ == TOKENS.SPACE) {
+      while (*ptr_line++ == TOKENS.SPACE) {
             cont++;
       }
       return cont + 1;

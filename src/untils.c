@@ -16,6 +16,5 @@ int isBetweenQuotes(char *token, int lenght_token, char *line) {
             endQ = !endQ;
             line_ptr = pos + 1;
       }
-      printf("s:%i, e:%i\n", startQ, endQ);
       return startQ && endQ;
 }

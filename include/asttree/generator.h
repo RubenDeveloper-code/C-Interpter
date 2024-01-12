@@ -6,10 +6,11 @@
 
 enum typedata { TYPE_INT, TYPE_CHAR, TYPE_FLOAT };
 
-int generateFile(char *file);
+struct Node *generateFile(char *file);
 char *getLine(FILE *STREAM);
-void *generateLine(char *line);
+void *generateNode(char *line);
 int nodeType(char *token);
+void *genDeclNode(char *line);
 enum TypeNode filterTypeNode(char *token);
 enum TypeBinaryNode filterTypeNodeBin(char *line);
 int isTypeData(char *token);
