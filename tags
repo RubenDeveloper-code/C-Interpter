@@ -72,47 +72,40 @@
 !_TAG_ROLE_DESCRIPTION!Make!makefile	optional	/optionally included/
 !_TAG_ROLE_DESCRIPTION!Sh!heredoc	endmarker	/end marker/
 !_TAG_ROLE_DESCRIPTION!Sh!script	loaded	/loaded/
-ADD	include/asttree/nodes.h	/^enum BINOP { ADD, RES, MULT, DIV };$/;"	e	enum:BINOP
 ADIOS	test/precompiler/undef/fortest/main.c	/^#define ADIOS /;"	d	file:
 ALL_AST_SRC	Makefile	/^ALL_AST_SRC = src\/asttree\/*$/;"	m
 ALL_PRECOMPILER_SRC	Makefile	/^ALL_PRECOMPILER_SRC = src\/precompiler\/precompiler.c \\$/;"	m
 AMLOA	test/precompiler/conditions/fortest/main.c	/^#define AMLOA$/;"	d	file:
 ARGS	include/precompiler/pre_defines.h	/^      char **ARGS;$/;"	m	struct:Define	typeref:typename:char **
 ARGS	test/precompiler/defines/fortest/somemacros.h	/^#define ARGS /;"	d
-ARRAY	include/asttree/nodes.h	/^enum TYPE { SIMPLE, ARRAY, FOO };$/;"	e	enum:TYPE
-ASSGN	include/asttree/nodes.h	/^      ASSGN,$/;"	e	enum:NODES
 ASTERISK	include/tokens.h	/^      const char ASTERISK;$/;"	m	struct:Token	typeref:typename:const char
 ASTTOKENS	include/asttree/astTokens.h	/^} extern ASTTOKENS;$/;"	v	typeref:struct:ASTTokens extern
 ASTTOKENS	src/asttree/astTokens.c	/^struct ASTTokens ASTTOKENS = {$/;"	v	typeref:struct:ASTTokens
 ASTTokens	include/asttree/astTokens.h	/^struct ASTTokens {$/;"	s
-Assign	include/asttree/nodes.h	/^struct Assign {$/;"	s
 BIN	Makefile	/^BIN = bin\/$/;"	m
-BINOP	include/asttree/nodes.h	/^enum BINOP { ADD, RES, MULT, DIV };$/;"	g
+BINARYNODE	include/asttree/nodes.h	/^enum TypeNode { SUPERNODE, BINARYNODE, CONSTNODE };$/;"	e	enum:TypeNode
+BODY	include/asttree/nodes.h	/^enum TypeSuperNode { GLOBAL, BODYFOO, BODY };$/;"	e	enum:TypeSuperNode
+BODYFOO	include/asttree/nodes.h	/^enum TypeSuperNode { GLOBAL, BODYFOO, BODY };$/;"	e	enum:TypeSuperNode
 BRACKET_CLOSED	include/tokens.h	/^      const char BRACKET_CLOSED;$/;"	m	struct:Token	typeref:typename:const char
 BRACKET_OPEN	include/tokens.h	/^      const char BRACKET_OPEN;$/;"	m	struct:Token	typeref:typename:const char
 BUFFSIZE	include/asttree/declares.h	/^#define BUFFSIZE /;"	d
 BUFFSIZE	include/precompiler/pre_skeleton.h	/^#define BUFFSIZE /;"	d
 BUFFSIZE	src/asttree/generator.c	/^#define BUFFSIZE /;"	d	file:
-BinOp	include/asttree/nodes.h	/^struct BinOp {$/;"	s
+BUFFSIZE	src/asttree/readerTokens.c	/^#define BUFFSIZE /;"	d	file:
+BinaryNode	include/asttree/nodes.h	/^struct BinaryNode {$/;"	s
 CC	Makefile	/^CC = gcc$/;"	m
 CFLAGS	Makefile	/^CFLAGS = -g -Wall$/;"	m
-CHAR	include/asttree/nodes.h	/^enum TYPES_DATA { INT, CHAR, FLOAT, VOID };$/;"	e	enum:TYPES_DATA
+CHAR	include/asttree/nodes.h	/^enum TypeConstNode { INT, CHAR, STRING, FLOAT };$/;"	e	enum:TypeConstNode
+CHARACTER	include/asttree/nodes.h	/^            char CHARACTER;$/;"	m	union:ConstNode::__anon1fb1ee4e010a	typeref:typename:char
 CLOSED_PARENTHESIS	include/tokens.h	/^      const char CLOSED_PARENTHESIS;$/;"	m	struct:Token	typeref:typename:const char
 COMA	include/tokens.h	/^      const char COMA;$/;"	m	struct:Token	typeref:typename:const char
-DECLARRAY	include/asttree/nodes.h	/^      DECLARRAY,$/;"	e	enum:NODES
-DECLDEF	include/asttree/nodes.h	/^      DECLDEF,$/;"	e	enum:NODES
-DECLDEFARR	include/asttree/nodes.h	/^      DECLDEFARR,$/;"	e	enum:NODES
-DECLFOO	include/asttree/nodes.h	/^      DECLFOO,$/;"	e	enum:NODES
-DECLVAR	include/asttree/nodes.h	/^      DECLVAR,$/;"	e	enum:NODES
-DEFARR	include/asttree/nodes.h	/^      DEFARR,$/;"	e	enum:NODES
-DEFFOO	include/asttree/nodes.h	/^      DEFFOO,$/;"	e	enum:NODES
+CONSTNODE	include/asttree/nodes.h	/^enum TypeNode { SUPERNODE, BINARYNODE, CONSTNODE };$/;"	e	enum:TypeNode
+ConstNode	include/asttree/nodes.h	/^struct ConstNode {$/;"	s
+DECL	include/asttree/nodes.h	/^enum TypeBinaryNode { DECL, DEF, IF, WHILE };$/;"	e	enum:TypeBinaryNode
+DEF	include/asttree/nodes.h	/^enum TypeBinaryNode { DECL, DEF, IF, WHILE };$/;"	e	enum:TypeBinaryNode
 DEFINE	include/precompiler/pre_tokens.h	/^      const char *DEFINE;$/;"	m	struct:TokensPecompiler	typeref:typename:const char *
 DEFINES	src/precompiler/pre_defines.c	/^struct Define *DEFINES[MAXBUFFVARS];$/;"	v	typeref:struct:Define * []
 DEFINE_NOT_EXISTS	include/precompiler/pre_status.h	/^      DEFINE_NOT_EXISTS$/;"	e	enum:ERROR
-DEFVAR	include/asttree/nodes.h	/^      DEFVAR,$/;"	e	enum:NODES
-DIV	include/asttree/nodes.h	/^enum BINOP { ADD, RES, MULT, DIV };$/;"	e	enum:BINOP
-Declare	include/asttree/nodes.h	/^struct Declare {$/;"	s
-Define	include/asttree/nodes.h	/^struct Define {$/;"	s
 Define	include/precompiler/pre_defines.h	/^struct Define {$/;"	s
 ELSE	include/asttree/astTokens.h	/^      const char *ELSE;$/;"	m	struct:ASTTokens	typeref:typename:const char *
 ELSE	include/precompiler/pre_tokens.h	/^      const char *ELSE;$/;"	m	struct:TokensPecompiler	typeref:typename:const char *
@@ -123,15 +116,16 @@ ERROR	include/precompiler/pre_status.h	/^enum ERROR {$/;"	g
 ERROR	include/precompiler/pre_status.h	/^enum STATUS { SUCCESS, ERROR };$/;"	e	enum:STATUS
 ERRORS	src/precompiler/pre_status.c	/^const char *ERRORS[] = {"", "syntax error %s in line %i",$/;"	v	typeref:typename:const char * []
 FILE_NO_EXISTS	include/precompiler/pre_status.h	/^      FILE_NO_EXISTS,$/;"	e	enum:ERROR
-FLOAT	include/asttree/nodes.h	/^enum TYPES_DATA { INT, CHAR, FLOAT, VOID };$/;"	e	enum:TYPES_DATA
-FOO	include/asttree/nodes.h	/^enum TYPE { SIMPLE, ARRAY, FOO };$/;"	e	enum:TYPE
+FLOAT	include/asttree/nodes.h	/^            float FLOAT;$/;"	m	union:ConstNode::__anon1fb1ee4e010a	typeref:typename:float
+FLOAT	include/asttree/nodes.h	/^enum TypeConstNode { INT, CHAR, STRING, FLOAT };$/;"	e	enum:TypeConstNode
 FOR	include/asttree/astTokens.h	/^      const char *FOR;$/;"	m	struct:ASTTokens	typeref:typename:const char *
-FOR	include/asttree/nodes.h	/^      FOR,$/;"	e	enum:NODES
+GETT	src/asttree/readerTokens.c	/^#define GETT /;"	d	file:
+GLOBAL	include/asttree/nodes.h	/^enum TypeSuperNode { GLOBAL, BODYFOO, BODY };$/;"	e	enum:TypeSuperNode
 HOLA	test/precompiler/conditions/fortest/main.c	/^#define HOLA$/;"	d	file:
 HOLA	test/precompiler/includes/fortest/sum.h	/^#define HOLA /;"	d
 HOLA	test/precompiler/undef/fortest/main.c	/^#define HOLA /;"	d	file:
 IF	include/asttree/astTokens.h	/^      const char *IF;$/;"	m	struct:ASTTokens	typeref:typename:const char *
-IF	include/asttree/nodes.h	/^      IF,$/;"	e	enum:NODES
+IF	include/asttree/nodes.h	/^enum TypeBinaryNode { DECL, DEF, IF, WHILE };$/;"	e	enum:TypeBinaryNode
 IFDEF	include/precompiler/pre_tokens.h	/^      const char *IFDEF;$/;"	m	struct:TokensPecompiler	typeref:typename:const char *
 IFNDEF	include/precompiler/pre_tokens.h	/^      const char *IFNDEF;$/;"	m	struct:TokensPecompiler	typeref:typename:const char *
 INCLUDE	Makefile	/^INCLUDE = include\/$/;"	m
@@ -139,32 +133,33 @@ INCLUDE_FIELD_CLOSED	include/precompiler/pre_tokens.h	/^      const char INCLUDE
 INCLUDE_FIELD_OPEN	include/precompiler/pre_tokens.h	/^      const char INCLUDE_FIELD_OPEN;$/;"	m	struct:TokensPecompiler	typeref:typename:const char
 INCLUDE_FILE_NO_EXISTS	include/precompiler/pre_status.h	/^      INCLUDE_FILE_NO_EXISTS,$/;"	e	enum:ERROR
 INCLUDE_ORDER	include/precompiler/pre_tokens.h	/^      const char *INCLUDE_ORDER;$/;"	m	struct:TokensPecompiler	typeref:typename:const char *
-INT	include/asttree/nodes.h	/^enum TYPES_DATA { INT, CHAR, FLOAT, VOID };$/;"	e	enum:TYPES_DATA
+INT	include/asttree/nodes.h	/^enum TypeConstNode { INT, CHAR, STRING, FLOAT };$/;"	e	enum:TypeConstNode
+INTEGER	include/asttree/nodes.h	/^            int INTEGER;$/;"	m	union:ConstNode::__anon1fb1ee4e010a	typeref:typename:int
 INVALID	include/precompiler/pre_defines.h	/^#define INVALID /;"	d
 JUDAS	test/precompiler/conditions/fortest/main.c	/^#define JUDAS$/;"	d	file:
 JUMP_LINE	include/tokens.h	/^      const char JUMP_LINE;$/;"	m	struct:Token	typeref:typename:const char
+LEND	src/asttree/readerTokens.c	/^#define LEND /;"	d	file:
 MACRO	include/precompiler/pre_defines.h	/^enum TYPE { NORMAL, MACRO };$/;"	e	enum:TYPE
 MAXBUFFVARS	include/precompiler/pre_defines.h	/^#define MAXBUFFVARS /;"	d
-MULT	include/asttree/nodes.h	/^enum BINOP { ADD, RES, MULT, DIV };$/;"	e	enum:BINOP
-NODES	include/asttree/nodes.h	/^enum NODES {$/;"	g
-NONE	include/asttree/nodes.h	/^      NONE = -1,$/;"	e	enum:NODES
 NONE	test/precompiler/defines/fortest/somemacros.h	/^#define NONE$/;"	d
 NORMAL	include/precompiler/pre_defines.h	/^enum TYPE { NORMAL, MACRO };$/;"	e	enum:TYPE
-Node	include/asttree/nodes.h	/^struct Node {$/;"	s
 OPEN_PARENTHESIS	include/tokens.h	/^      const char OPEN_PARENTHESIS;$/;"	m	struct:Token	typeref:typename:const char
 OUT	Makefile	/^OUT = bin\/rc$/;"	m
 PRECOMPILE_ORDER	include/precompiler/pre_tokens.h	/^      const char PRECOMPILE_ORDER;$/;"	m	struct:TokensPecompiler	typeref:typename:const char
 QUOTES	include/tokens.h	/^      const char QUOTES;$/;"	m	struct:Token	typeref:typename:const char
-RES	include/asttree/nodes.h	/^enum BINOP { ADD, RES, MULT, DIV };$/;"	e	enum:BINOP
+RESERVED_WORDS	src/tokens.c	/^struct ReservedWords RESERVED_WORDS = {"int", "char", "float"};$/;"	v	typeref:struct:ReservedWords
 RETURN	include/asttree/astTokens.h	/^      const char *RETURN;$/;"	m	struct:ASTTokens	typeref:typename:const char *
-SIMPLE	include/asttree/nodes.h	/^enum TYPE { SIMPLE, ARRAY, FOO };$/;"	e	enum:TYPE
+ReservedWords	include/tokens.h	/^struct ReservedWords {$/;"	s
 SLASH	include/tokens.h	/^      const char SLASH;$/;"	m	struct:Token	typeref:typename:const char
 SPACE	include/tokens.h	/^      const char SPACE;$/;"	m	struct:Token	typeref:typename:const char
 SRC	Makefile	/^SRC = src\/$/;"	m
 STATUS	include/precompiler/pre_status.h	/^enum STATUS { SUCCESS, ERROR };$/;"	g
+STRING	include/asttree/nodes.h	/^            char *STRING;$/;"	m	union:ConstNode::__anon1fb1ee4e010a	typeref:typename:char *
+STRING	include/asttree/nodes.h	/^enum TypeConstNode { INT, CHAR, STRING, FLOAT };$/;"	e	enum:TypeConstNode
 SUCCESS	include/precompiler/pre_status.h	/^enum STATUS { SUCCESS, ERROR };$/;"	e	enum:STATUS
+SUPERNODE	include/asttree/nodes.h	/^enum TypeNode { SUPERNODE, BINARYNODE, CONSTNODE };$/;"	e	enum:TypeNode
 SYNTAX_ERROR	include/precompiler/pre_status.h	/^      SYNTAX_ERROR = 1,$/;"	e	enum:ERROR
-SimpleInt	include/asttree/nodes.h	/^struct SimpleInt {$/;"	s
+SuperNode	include/asttree/nodes.h	/^struct SuperNode {$/;"	s
 TESTS	Makefile	/^TESTS = test\/$/;"	m
 TESTSBIN	Makefile	/^TESTSBIN = test\/bin\/$/;"	m
 TEST_CONDITIONS_DIR	Makefile	/^TEST_CONDITIONS_DIR = test\/precompiler\/conditions$/;"	m
@@ -175,20 +170,27 @@ TEST_UNDEF_DIR	Makefile	/^TEST_UNDEF_DIR = test\/precompiler\/undef$/;"	m
 TOKENS	Makefile	/^TOKENS = src\/tokens.c$/;"	m
 TOKENS	src/tokens.c	/^struct Token TOKENS = {' ',  '"',  ',', '\/', '(', ')', '*',$/;"	v	typeref:struct:Token
 TOKENS_PRECOMPILER	src/precompiler/pre_tokens.c	/^struct TokensPecompiler TOKENS_PRECOMPILER = {$/;"	v	typeref:struct:TokensPecompiler
-TYPE	include/asttree/nodes.h	/^      TYPE,$/;"	e	enum:NODES
-TYPE	include/asttree/nodes.h	/^enum TYPE { SIMPLE, ARRAY, FOO };$/;"	g
 TYPE	include/precompiler/pre_defines.h	/^enum TYPE { NORMAL, MACRO };$/;"	g
 TYPES	include/asttree/astTokens.h	/^      const char *TYPES[];$/;"	m	struct:ASTTokens	typeref:typename:const char * []
-TYPES_DATA	include/asttree/nodes.h	/^enum TYPES_DATA { INT, CHAR, FLOAT, VOID };$/;"	g
+TYPE_CHAR	include/asttree/generator.h	/^enum typedata { TYPE_INT, TYPE_CHAR, TYPE_FLOAT };$/;"	e	enum:typedata
+TYPE_FLOAT	include/asttree/generator.h	/^enum typedata { TYPE_INT, TYPE_CHAR, TYPE_FLOAT };$/;"	e	enum:typedata
+TYPE_INT	include/asttree/generator.h	/^enum typedata { TYPE_INT, TYPE_CHAR, TYPE_FLOAT };$/;"	e	enum:typedata
 Token	include/tokens.h	/^struct Token {$/;"	s
 TokensPecompiler	include/precompiler/pre_tokens.h	/^struct TokensPecompiler {$/;"	s
+TypeBinaryNode	include/asttree/nodes.h	/^enum TypeBinaryNode { DECL, DEF, IF, WHILE };$/;"	g
+TypeConstNode	include/asttree/nodes.h	/^enum TypeConstNode { INT, CHAR, STRING, FLOAT };$/;"	g
+TypeNode	include/asttree/nodes.h	/^enum TypeNode { SUPERNODE, BINARYNODE, CONSTNODE };$/;"	g
+TypeSuperNode	include/asttree/nodes.h	/^enum TypeSuperNode { GLOBAL, BODYFOO, BODY };$/;"	g
 UNDEF	include/precompiler/pre_tokens.h	/^      const char *UNDEF;$/;"	m	struct:TokensPecompiler	typeref:typename:const char *
 UNDERSCORE	include/tokens.h	/^      const char UNDERSCORE;$/;"	m	struct:Token	typeref:typename:const char
+VAL	include/asttree/nodes.h	/^      } VAL;$/;"	m	struct:ConstNode	typeref:union:ConstNode::__anon1fb1ee4e010a
 VALID	include/precompiler/pre_defines.h	/^#define VALID /;"	d
-VOID	include/asttree/nodes.h	/^enum TYPES_DATA { INT, CHAR, FLOAT, VOID };$/;"	e	enum:TYPES_DATA
 WHILE	include/asttree/astTokens.h	/^      const char *WHILE;$/;"	m	struct:ASTTokens	typeref:typename:const char *
-WHILE	include/asttree/nodes.h	/^      WHILE$/;"	e	enum:NODES
+WHILE	include/asttree/nodes.h	/^enum TypeBinaryNode { DECL, DEF, IF, WHILE };$/;"	e	enum:TypeBinaryNode
 ZERO_END	include/tokens.h	/^      const char ZERO_END;$/;"	m	struct:Token	typeref:typename:const char
+_CHAR_	include/tokens.h	/^      const char *_CHAR_;$/;"	m	struct:ReservedWords	typeref:typename:const char *
+_FLOAT_	include/tokens.h	/^      const char *_FLOAT_;$/;"	m	struct:ReservedWords	typeref:typename:const char *
+_INT_	include/tokens.h	/^      const char *_INT_;$/;"	m	struct:ReservedWords	typeref:typename:const char *
 _MAX_	test/precompiler/defines/fortest/somemacros.h	/^#define _MAX_(/;"	d
 _POSIX1_SOURCE	include/precompiler/pre_skeleton.h	/^#define _POSIX1_SOURCE /;"	d
 _POW_	test/precompiler/defines/fortest/somemacros.h	/^#define _POW_(/;"	d
@@ -207,21 +209,21 @@ __PRE_FGETCH_H__	include/precompiler/pre_fgetc.h	/^#define __PRE_FGETCH_H__$/;"	
 __PRE_INCLUDES_H__	include/precompiler/pre_includes.h	/^#define __PRE_INCLUDES_H__$/;"	d
 __PRE_TOKENS_H__	include/precompiler/pre_tokens.h	/^#define __PRE_TOKENS_H__$/;"	d
 __PRE_UTILS_H__	include/precompiler/pre_utils.h	/^#define __PRE_UTILS_H__$/;"	d
+__READER_TOKENS_H__	include/asttree/readerTokens.h	/^#define __READER_TOKENS_H__$/;"	d
 __TOKENS_H__	include/tokens.h	/^#define __TOKENS_H__$/;"	d
+__UNTILS_H__	include/untils.h	/^#define __UNTILS_H__$/;"	d
+__anon1fb1ee4e010a	include/asttree/nodes.h	/^      union {$/;"	u	struct:ConstNode
 a	test/astTree/declare/main.c	/^int a;$/;"	v	typeref:typename:int
 addDeclareArray	src/asttree/declares.c	/^void addDeclareArray(void *ptr) { ptrdarr = ptr; }$/;"	f	typeref:typename:void
 addDeclareFoo	src/asttree/declares.c	/^void addDeclareFoo(void *ptr) { ptrdfoo = ptr; }$/;"	f	typeref:typename:void
 addDeclareVar	src/asttree/declares.c	/^void addDeclareVar(void *ptr) { ptrdvar = ptr; }$/;"	f	typeref:typename:void
 addVariableAndValue	src/precompiler/pre_defines.c	/^int addVariableAndValue(char *VARIABLE, char *VALUE) {$/;"	f	typeref:typename:int
 adios	test/precompiler/conditions/fortest/main.c	/^char *adios = "Te digo adios desde un segundo nivel (IFDEF IFNDEF)";$/;"	v	typeref:typename:char *
-advfgetc	src/asttree/generator.c	/^char advfgetc(FILE *STREAM) {$/;"	f	typeref:typename:char
 alsedios	test/precompiler/conditions/fortest/main.c	/^char *alsedios = "Te dios adios desde segundo nivel else waos";$/;"	v	typeref:typename:char *
 amlo	test/precompiler/conditions/fortest/main.c	/^char *amlo = "->NO EJTOY DEFIIIINIDO";$/;"	v	typeref:typename:char *
 amlo	test/precompiler/conditions/fortest/main.c	/^char *amlo = "HAY ESTAN LAJ MAJACRES JEJEJEJE";$/;"	v	typeref:typename:char *
 b	test/astTree/declare/main.c	/^int b;$/;"	v	typeref:typename:int
 clearDefines	src/precompiler/pre_defines.c	/^void clearDefines() {$/;"	f	typeref:typename:void
-data	include/asttree/nodes.h	/^      int data;$/;"	m	struct:BinOp	typeref:typename:int
-data	include/asttree/nodes.h	/^      int data;$/;"	m	struct:SimpleInt	typeref:typename:int
 declaresArr	src/asttree/declares.c	/^void *declaresArr[BUFFSIZE];$/;"	v	typeref:typename:void * []
 declaresFoo	src/asttree/declares.c	/^void *declaresFoo[BUFFSIZE];$/;"	v	typeref:typename:void * []
 declaresVar	src/asttree/declares.c	/^void *declaresVar[BUFFSIZE];$/;"	v	typeref:typename:void * []
@@ -229,23 +231,35 @@ existsVar	src/precompiler/pre_defines.c	/^int existsVar(const char *VARIABLE) {$
 ffgetc	src/precompiler/pre_fgetc.c	/^int ffgetc(FILE *stream) {$/;"	f	typeref:typename:int
 ffgetcUntil	src/precompiler/pre_utils.c	/^char *ffgetcUntil(FILE *stream, char limit) {$/;"	f	typeref:typename:char *
 filterPrecompileOrder	src/precompiler/precompiler.c	/^int filterPrecompileOrder(FILE *stream, FILE *stream_out, char *file_src_path) {$/;"	f	typeref:typename:int
+filterTypeNodeBin	src/asttree/generator.c	/^enum TypeBinaryNode filterTypeNodeBin(char *line) {$/;"	f	typeref:enum:TypeBinaryNode
 funputc	src/precompiler/pre_utils.c	/^void funputc(FILE *stream) {$/;"	f	typeref:typename:void
 genTree	src/asttree/graphicTree.c	/^void genTree(void *fatherNode, char *outFile) {$/;"	f	typeref:typename:void
+generateFile	src/asttree/generator.c	/^int generateFile(char *file) {$/;"	f	typeref:typename:int
+generateLine	src/asttree/generator.c	/^void *generateLine(char *line) {$/;"	f	typeref:typename:void *
 getArrayMacroArgs	src/precompiler/pre_defines.c	/^void getArrayMacroArgs(char **dest, char *src) {$/;"	f	typeref:typename:void
 getDefineValue	src/precompiler/pre_defines.c	/^char *getDefineValue(FILE *stream) {$/;"	f	typeref:typename:char *
 getDefineVariable	src/precompiler/pre_defines.c	/^char *getDefineVariable(FILE *stream) {$/;"	f	typeref:typename:char *
 getIncludeFile	src/precompiler/pre_includes.c	/^char *getIncludeFile(FILE *stream) {$/;"	f	typeref:typename:char *
+getLine	src/asttree/generator.c	/^char *getLine(FILE *STREAM) {$/;"	f	typeref:typename:char *
 getMacroArgs	src/precompiler/pre_defines.c	/^void getMacroArgs(char *argsMacro, char *src) {$/;"	f	typeref:typename:void
 getMacroArgsCall	src/precompiler/pre_defines.c	/^void getMacroArgsCall(char *argsCallMacro, char *pos) {$/;"	f	typeref:typename:void
 getMacroName	src/precompiler/pre_defines.c	/^void getMacroName(char *nameMacro, char *src) {$/;"	f	typeref:typename:void
+getNTokens	src/asttree/readerTokens.c	/^int getNTokens(char *line) {$/;"	f	typeref:typename:int
+getNextToken	src/asttree/readerTokens.c	/^char *getNextToken(char *line) { return getToken(line, GETT, 0); }$/;"	f	typeref:typename:char *
+getToken	src/asttree/readerTokens.c	/^char *getToken(char *line, int typeRead, int indexStart) {$/;"	f	typeref:typename:char *
 hola	test/precompiler/conditions/fortest/main.c	/^char *hola = "Estoy dentro de un bloque ifdef HOLA";$/;"	v	typeref:typename:char *
 holse	test/precompiler/conditions/fortest/main.c	/^char *holse = "->Estoy dentro de un bloque ifdef HOLA else ";$/;"	v	typeref:typename:char *
 ifwrt	src/precompiler/precompiler.c	/^int ifwrt[2048];$/;"	v	typeref:typename:int[2048]
 includeFile	src/precompiler/pre_includes.c	/^int includeFile(char *file, FILE *stream_out, char *path_src) {$/;"	f	typeref:typename:int
-isBetweenQuotes	src/precompiler/pre_utils.c	/^int isBetweenQuotes(char *token, int lenght, char *line) {$/;"	f	typeref:typename:int
+isBetweenQuotes	src/untils.c	/^int isBetweenQuotes(char *token, int lenght_token, char *line) {$/;"	f	typeref:typename:int
 isDefined	src/precompiler/pre_conditional.c	/^int isDefined(char *token) { return existsVar(token); }$/;"	f	typeref:typename:int
+isTypeData	src/asttree/generator.c	/^int isTypeData(char *token) {$/;"	f	typeref:typename:int
 judas	test/precompiler/conditions/fortest/main.c	/^char *judas = "->thiiiiiiiiiiiiiiiiiiiiiiiiis iiiiiiiiiiiis the pain ki ller";$/;"	v	typeref:typename:char *
-left	include/asttree/nodes.h	/^      void *left;$/;"	m	struct:Node	typeref:typename:void *
+left	include/asttree/nodes.h	/^      void *left;$/;"	m	struct:BinaryNode	typeref:typename:void *
+lendFirstToken	src/asttree/readerTokens.c	/^char *lendFirstToken(char *line) { return getToken(line, LEND, 0); }$/;"	f	typeref:typename:char *
+lendLastToken	src/asttree/readerTokens.c	/^char *lendLastToken(char *line) {$/;"	f	typeref:typename:char *
+lendNextToken	src/asttree/readerTokens.c	/^char *lendNextToken(char *line) { return getToken(line, LEND, 0); }$/;"	f	typeref:typename:char *
+lendToken	src/asttree/readerTokens.c	/^char *lendToken(char *line, int index) { return getToken(line, LEND, index); }$/;"	f	typeref:typename:char *
 main	test/astTree/declare/testdecl.c	/^int main() { generateAST("test\/astTree\/defines\/main.c"); }$/;"	f	typeref:typename:int
 main	test/precompiler/conditions/conditionstest.c	/^int main() {$/;"	f	typeref:typename:int
 main	test/precompiler/defines/definestest.c	/^int main() {$/;"	f	typeref:typename:int
@@ -257,8 +271,9 @@ main	test/precompiler/includes/test.c	/^int main() {$/;"	f	typeref:typename:int
 main	test/precompiler/undef/testundef.c	/^int main() {$/;"	f	typeref:typename:int
 manageSpaces	src/precompiler/pre_fgetc.c	/^void manageSpaces(FILE *stream, char *token, char *prevToken) {$/;"	f	typeref:typename:void
 nLines	src/precompiler/pre_status.c	/^int nLines = 0;$/;"	v	typeref:typename:int
-name	include/asttree/nodes.h	/^      char *name;$/;"	m	struct:Declare	typeref:typename:char *
 name	include/precompiler/pre_defines.h	/^      char *name;$/;"	m	struct:Define	typeref:typename:char *
+nodeType	src/asttree/generator.c	/^int nodeType(char *token) {}$/;"	f	typeref:typename:int
+nodes	include/asttree/nodes.h	/^      void **nodes;$/;"	m	struct:SuperNode	typeref:typename:void **
 openIfs	src/precompiler/precompiler.c	/^int openIfs = -1;$/;"	v	typeref:typename:int
 precompile	src/precompiler/precompiler.c	/^int precompile(FILE *stream, char *path_src) {$/;"	f	typeref:typename:int
 precompileAll	src/precompiler/precompiler.c	/^int precompileAll(char *files[], int nfiles, char *out_path) {$/;"	f	typeref:typename:int
@@ -272,8 +287,9 @@ reportFatalError	src/precompiler/pre_status.c	/^void reportFatalError(int nLine,
 res	test/precompiler/includes/fortest/res.c	/^int res(int a, int b) { return a + b; }$/;"	f	typeref:typename:int
 res	test/precompiler/includes/results/res.c	/^int res(int a,int b){return a+b;}$/;"	f	typeref:typename:int
 resolveDefines	src/precompiler/pre_defines.c	/^int resolveDefines(char *line) {$/;"	f	typeref:typename:int
-right	include/asttree/nodes.h	/^      void *right;$/;"	m	struct:Node	typeref:typename:void *
+right	include/asttree/nodes.h	/^      void *right;$/;"	m	struct:BinaryNode	typeref:typename:void *
 skipComments	src/precompiler/pre_fgetc.c	/^void skipComments(FILE *stream, char *token, char *prevToken) {$/;"	f	typeref:typename:void
+start	src/asttree/graphicTree.c	/^void start(void *node, FILE *STREAM_OUT) { while () }$/;"	f	typeref:typename:void
 stream_out	src/precompiler/precompiler.c	/^FILE *stream_out;$/;"	v	typeref:typename:FILE *
 sum	test/precompiler/includes/fortest/sum.c	/^int sum(int a, int b) { return a + b; }$/;"	f	typeref:typename:int
 sum	test/precompiler/includes/results/sum.c	/^int sum(int a,int b){return a+b;}$/;"	f	typeref:typename:int
@@ -285,18 +301,13 @@ testUndef	Makefile	/^testUndef:$/;"	t
 tests	Makefile	/^tests: testIncludes testDefines testConditions testUndef$/;"	t
 texto	test/precompiler/conditions/fortest/main.c	/^char *texto = "soy texto independiente a los bloques, si no me ves preocupate";$/;"	v	typeref:typename:char *
 textos	test/precompiler/conditions/fortest/main.c	/^char *textos = "->hola soy la cabecera del codigo, preocupate si no estoy";$/;"	v	typeref:typename:char *
-type	include/asttree/nodes.h	/^      enum BINOP type;$/;"	m	struct:BinOp	typeref:enum:BINOP
-type	include/asttree/nodes.h	/^      enum TYPE type;$/;"	m	struct:Declare	typeref:enum:TYPE
+type	include/asttree/nodes.h	/^      enum TypeBinaryNode type;$/;"	m	struct:BinaryNode	typeref:enum:TypeBinaryNode
+type	include/asttree/nodes.h	/^      enum TypeConstNode type;$/;"	m	struct:ConstNode	typeref:enum:TypeConstNode
+type	include/asttree/nodes.h	/^      enum TypeSuperNode type;$/;"	m	struct:SuperNode	typeref:enum:TypeSuperNode
 type	include/precompiler/pre_defines.h	/^      enum TYPE type;$/;"	m	struct:Define	typeref:enum:TYPE
-typedata	include/asttree/nodes.h	/^      enum TYPES_DATA typedata;$/;"	m	struct:Declare	typeref:enum:TYPES_DATA
+typedata	include/asttree/generator.h	/^enum typedata { TYPE_INT, TYPE_CHAR, TYPE_FLOAT };$/;"	g
 undefVar	src/precompiler/pre_defines.c	/^int undefVar(const char *VARIABLE) {$/;"	f	typeref:typename:int
-v1	include/asttree/nodes.h	/^      void *v1;$/;"	m	struct:BinOp	typeref:typename:void *
-v2	include/asttree/nodes.h	/^      void *v2;$/;"	m	struct:BinOp	typeref:typename:void *
-val	include/asttree/nodes.h	/^      void *val;$/;"	m	struct:Assign	typeref:typename:void *
 valid	include/precompiler/pre_defines.h	/^      int valid;$/;"	m	struct:Define	typeref:typename:int
-value	include/asttree/nodes.h	/^      void *value;$/;"	m	struct:Define	typeref:typename:void *
 value	include/precompiler/pre_defines.h	/^      char *value;$/;"	m	struct:Define	typeref:typename:char *
-var	include/asttree/nodes.h	/^      char *var;$/;"	m	struct:Assign	typeref:typename:char *
-varDefined	include/asttree/nodes.h	/^      void *varDefined;$/;"	m	struct:Define	typeref:typename:void *
 variableIndex	src/precompiler/pre_defines.c	/^int variableIndex = 0;$/;"	v	typeref:typename:int
 wrte	src/precompiler/precompiler.c	/^int wrte = 1;$/;"	v	typeref:typename:int

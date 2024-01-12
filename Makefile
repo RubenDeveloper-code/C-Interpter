@@ -16,6 +16,7 @@ ALL_PRECOMPILER_SRC = src/precompiler/precompiler.c \
 		      src/precompiler/pre_tokens.c\
 		      src/precompiler/pre_status.c
 TOKENS = src/tokens.c
+#si algo no funca es prorque no estas compilando el untils auauau
 
 ALL_AST_SRC = src/asttree/*
 

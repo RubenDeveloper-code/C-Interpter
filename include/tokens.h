@@ -16,5 +16,13 @@ struct Token {
       const char BRACKET_CLOSED;
       const char EQUAL;
 };
+
+struct ReservedWords {
+      const char *_INT_;
+      const char *_CHAR_;
+      const char *_FLOAT_;
+};
+
 extern struct Token TOKENS;
+extern struct ReservedWords RESERVED_WORDS;
 #endif
