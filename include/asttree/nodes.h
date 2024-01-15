@@ -8,27 +8,30 @@ enum TypeBinaryNode { DECL, DEF, IF, WHILE };
 enum TypeConstNode { INT, CHAR, STRING, FLOAT };
 
 struct Node {
-      enum TypeNode typeNode;
-      struct {
-            enum TypeSuperNode type;
-            struct Node **nodes;
-      } SuperNode;
+      enum TypeNode type;
+      void *node;
+};
 
-      struct {
-            enum TypeBinaryNode type;
-            struct Node *left;
-            struct Node *right;
-      } BinaryNode;
+struct SuperNode {
+      enum TypeSuperNode type;
+      struct Node **nodes;
+      int contNodes;
+};
 
-      struct {
-            enum TypeConstNode type;
-            union {
-                  int INTEGER;
-                  char CHARACTER;
-                  char *STRING;
-                  float FLOAT;
-            } VAL;
-      } ConstNode;
+struct BinaryNode {
+      enum TypeBinaryNode type;
+      struct Node *left;
+      struct Node *right;
+};
+
+struct ConstNode {
+      enum TypeConstNode type;
+      union {
+            int INTEGER;
+            char CHARACTER;
+            char *STRING;
+            float FLOAT;
+      } VAL;
 };
 
 #endif

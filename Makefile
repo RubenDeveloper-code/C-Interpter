@@ -47,6 +47,6 @@ testUndef:
 
 TEST_DECL_DIR = test/astTree/declare
 testASTDecl:
-	@gcc $(ALL_AST_SRC) $(TOKENS) $(UNTILS) $(TEST_DECL_DIR)/testdecl.c -o $(TEST_DECL_DIR)/decl_test.o -I $(INCLUDE) -g -Wall
+	@gcc $(ALL_AST_SRC) $(TOKENS) $(UNTILS) $(TEST_DECL_DIR)/testdecl.c -o $(TEST_DECL_DIR)/decl_test.o -I $(INCLUDE) -g -Wall -lssl -lcrypto
 	gdb ./test/astTree/declare/decl_test.o
 

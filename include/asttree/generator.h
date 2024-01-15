@@ -6,7 +6,7 @@
 
 enum typedata { TYPE_INT, TYPE_CHAR, TYPE_FLOAT };
 
-struct Node *generateFile(char *file);
+void *generateFile(char *file);
 char *getLine(FILE *STREAM);
 void *generateNode(char *line);
 int nodeType(char *token);

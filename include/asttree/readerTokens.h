@@ -8,5 +8,6 @@ char *lendNextToken(char *line);
 char *lendLastToken(char *line);
 char *lendFirstToken(char *line);
 char *lendToken(char *line, int index);
+void freeOffset();
 
 #endif

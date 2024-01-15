@@ -13,19 +13,22 @@
 
 #define BUFFSIZE 2048
 
-struct Node *generateFile(char *file) {
-      struct Node *GLOBAL_NODE = malloc(sizeof(struct Node));
-      GLOBAL_NODE->SuperNode.nodes = malloc(sizeof(void *) * BUFFSIZE);
+void *generateFile(char *file) {
+      struct Node *genericNode = malloc(sizeof(struct Node));
+      struct SuperNode *GLOBAL_NODE = malloc(sizeof(struct SuperNode));
+      GLOBAL_NODE->nodes = malloc(sizeof(void *) * BUFFSIZE);
       FILE *STREAM = fopen(file, "r");
       if (file == NULL)
             return NULL;
       char *line;
       do {
             line = getLine(STREAM);
-            GLOBAL_NODE->SuperNode.nodes = generateNode(line);
-            GLOBAL_NODE->SuperNode.nodes++;
+            GLOBAL_NODE->nodes[GLOBAL_NODE->contNodes++] = generateNode(line);
       } while (line[0] != TOKENS.ZERO_END);
-      return GLOBAL_NODE;
+      GLOBAL_NODE->contNodes--;
+      genericNode->type = SUPERNODE;
+      genericNode->node = GLOBAL_NODE;
+      return genericNode;
 }
 
 void *generateNode(char *line) {
@@ -48,34 +51,50 @@ void *generateNode(char *line) {
             }
             }
       }
+      freeOffset();
       return node;
 }
 
 // name;
 void *genDeclNode(char *line) {
       char *name = strdup(getNextToken(line));
-      struct Node *typeData = malloc(sizeof(struct Node));
-      struct Node *nameData = malloc(sizeof(struct Node));
-      struct Node *binNode = malloc(sizeof(struct Node));
-      typeData->ConstNode.type = INT;
-      typeData->ConstNode.VAL.INTEGER = INT;
-      nameData->ConstNode.type = CHAR;
-      nameData->ConstNode.VAL.STRING = name;
-      binNode->BinaryNode.type = DECL;
-      binNode->BinaryNode.left = typeData;
-      binNode->BinaryNode.right = nameData;
-      return binNode;
+      struct ConstNode *typeData = malloc(sizeof(struct ConstNode));
+      struct ConstNode *nameData = malloc(sizeof(struct ConstNode));
+      struct BinaryNode *dclNode = malloc(sizeof(struct BinaryNode));
+
+      struct Node *decl = malloc(sizeof(struct Node));
+      struct Node *left = malloc(sizeof(struct Node));
+      struct Node *right = malloc(sizeof(struct Node));
+
+      typeData->type = INT;
+      typeData->VAL.INTEGER = INT;
+      left->type = CONSTNODE;
+      left->node = typeData;
+
+      nameData->type = CHAR;
+      nameData->VAL.STRING = name;
+      right->type = CONSTNODE;
+      right->node = nameData;
+
+      dclNode->type = DECL;
+      dclNode->left = left;
+      dclNode->right = right;
+
+      decl->type = BINARYNODE;
+      decl->node = dclNode;
+
+      return decl;
 }
 
 int nodeType(char *token) {
-      if (isTypeData(token))
+      if (isTypeData(token) != -1)
             return BINARYNODE;
       return -1;
 }
 
 enum TypeBinaryNode filterTypeNodeBin(char *line) {
       enum TypeBinaryNode nodetype = 0;
-      if (isTypeData(lendFirstToken(line)) != 0) {
+      if (isTypeData(lendFirstToken(line)) != -1) {
             if (lendToken(line, 2)[0] != TOKENS.EQUAL) {
                   nodetype = DECL;
             } else {
@@ -92,13 +111,13 @@ int isTypeData(char *token) {
             return TYPE_CHAR;
       if (strcmp(token, RESERVED_WORDS._FLOAT_) == 0)
             return TYPE_FLOAT;
-      return 0;
+      return -1;
 }
 
 char *getLine(FILE *STREAM) {
       char *line = malloc(sizeof(char) * BUFFSIZE);
       char *ptr_line = line, token;
-      while ((token = fgetc(STREAM)) != EOF) {
+      while ((token = fgetc(STREAM)) != TOKENS.END_LINE && token != EOF) {
             *ptr_line++ = token;
       }
       *ptr_line = TOKENS.ZERO_END;
@@ -106,13 +125,6 @@ char *getLine(FILE *STREAM) {
       char *ptr_final_line = final_line;
       ptr_line = line;
       while (*ptr_line != TOKENS.ZERO_END) {
-            /*
-          if (*ptr_line == TOKENS.SPACE) {
-                if (isBetweenQuotes(ptr_line, 1, line)) {
-                      *ptr_final_line = *ptr_line;
-                      ptr_final_line++;
-                }
-          } else*/
             if (*ptr_line != TOKENS.JUMP_LINE) {
                   *ptr_final_line = *ptr_line;
                   ptr_final_line++;
