@@ -6,13 +6,17 @@
 
 enum typedata { TYPE_INT, TYPE_CHAR, TYPE_FLOAT };
 
+extern struct SuperNode *GLOBAL_NODE;
+
 void *generateFile(char *file);
 char *getLine(FILE *STREAM);
 void *generateNode(char *line);
 int nodeType(char *token);
 void *genDeclNode(char *line);
+void *genDefNode(char *line, enum TypeConstNode typedata);
 enum TypeNode filterTypeNode(char *token);
 enum TypeBinaryNode filterTypeNodeBin(char *line);
 int isTypeData(char *token);
+void addtoGlobalNode(void *Node);
 
 #endif

@@ -5,7 +5,7 @@ enum TypeNode { SUPERNODE, BINARYNODE, CONSTNODE };
 
 enum TypeSuperNode { GLOBAL, BODYFOO, BODY };
 enum TypeBinaryNode { DECL, DEF, IF, WHILE };
-enum TypeConstNode { INT, CHAR, STRING, FLOAT };
+enum TypeConstNode { INT, CHAR, STRING, FLOAT, ACCESS_VAR };
 
 struct Node {
       enum TypeNode type;

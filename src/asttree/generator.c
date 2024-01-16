@@ -13,9 +13,11 @@
 
 #define BUFFSIZE 2048
 
+struct SuperNode *GLOBAL_NODE;
+
 void *generateFile(char *file) {
       struct Node *genericNode = malloc(sizeof(struct Node));
-      struct SuperNode *GLOBAL_NODE = malloc(sizeof(struct SuperNode));
+      GLOBAL_NODE = malloc(sizeof(struct SuperNode));
       GLOBAL_NODE->nodes = malloc(sizeof(void *) * BUFFSIZE);
       FILE *STREAM = fopen(file, "r");
       if (file == NULL)
@@ -23,12 +25,16 @@ void *generateFile(char *file) {
       char *line;
       do {
             line = getLine(STREAM);
-            GLOBAL_NODE->nodes[GLOBAL_NODE->contNodes++] = generateNode(line);
+            addtoGlobalNode(generateNode(line));
       } while (line[0] != TOKENS.ZERO_END);
       GLOBAL_NODE->contNodes--;
       genericNode->type = SUPERNODE;
       genericNode->node = GLOBAL_NODE;
       return genericNode;
+}
+
+void addtoGlobalNode(void *Node) {
+      GLOBAL_NODE->nodes[GLOBAL_NODE->contNodes++] = Node;
 }
 
 void *generateNode(char *line) {
@@ -41,6 +47,11 @@ void *generateNode(char *line) {
                   break;
             }
             case DEF: {
+                  int typedata = -1;
+                  if ((typedata = isTypeData(token)) != -1) {
+                        addtoGlobalNode(genDeclNode(line));
+                  }
+                  node = genDefNode(line, typedata);
                   break;
             }
             case IF: {
@@ -54,10 +65,45 @@ void *generateNode(char *line) {
       freeOffset();
       return node;
 }
+void *genDefNode(char *line, enum TypeConstNode typedata) {
+      char *name = strdup(getNextToken(line));
+      getNextToken(line);
+      struct ConstNode *var = malloc(sizeof(struct ConstNode));
+      struct ConstNode *value = malloc(sizeof(struct ConstNode));
+      struct BinaryNode *defbin = malloc(sizeof(struct BinaryNode));
+
+      struct Node *def = malloc(sizeof(struct Node));
+      struct Node *left = malloc(sizeof(struct Node));
+      struct Node *right = malloc(sizeof(struct Node));
+
+      var->type = ACCESS_VAR;
+      if (existsVar(name) != -1) {
+            var->VAL.STRING = name;
+      } else {
+            // Syntax error
+            return NULL;
+      }
+      left->type = CONSTNODE;
+      left->node = var;
+
+      value->type = typedata;
+      value->VAL.STRING = strdup(getNextToken(line));
+      right->type = CONSTNODE;
+      right->node = value;
+
+      defbin->type = DEF;
+      defbin->left = left;
+      defbin->right = right;
+
+      def->type = BINARYNODE;
+      def->node = defbin;
+
+      return def;
+}
 
 // name;
 void *genDeclNode(char *line) {
-      char *name = strdup(getNextToken(line));
+      char *name = strdup(lendNextToken(line));
       struct ConstNode *typeData = malloc(sizeof(struct ConstNode));
       struct ConstNode *nameData = malloc(sizeof(struct ConstNode));
       struct BinaryNode *dclNode = malloc(sizeof(struct BinaryNode));
@@ -83,6 +129,7 @@ void *genDeclNode(char *line) {
       decl->type = BINARYNODE;
       decl->node = dclNode;
 
+      addDeclareVar(nameData);
       return decl;
 }
 
@@ -94,12 +141,11 @@ int nodeType(char *token) {
 
 enum TypeBinaryNode filterTypeNodeBin(char *line) {
       enum TypeBinaryNode nodetype = 0;
-      if (isTypeData(lendFirstToken(line)) != -1) {
-            if (lendToken(line, 2)[0] != TOKENS.EQUAL) {
-                  nodetype = DECL;
-            } else {
-                  nodetype = DEF;
-            }
+      char *temp = lendToken(line, 2);
+      if (lendToken(line, 1)[0] != TOKENS.EQUAL) {
+            nodetype = DECL;
+      } else {
+            nodetype = DEF;
       }
       return nodetype;
 }

@@ -1,14 +1,16 @@
 #ifndef __DECLARE_H__
 #define __DECLARE_H__
 
+#include "nodes.h"
 #define BUFFSIZE 2048
-extern void *declaresVar[];
-extern void *declaresArr[];
-extern void *declaresFoo[];
+extern struct ConstNode declaresVar[];
+extern struct ConstNode declaresArr[];
+extern struct ConstNode declaresFoo[];
 
-extern void *ptrdvar, *ptrdarr, *ptrdfoo;
+extern struct ConstNode *ptrdvar, *ptrdarr, *ptrdfoo;
 
-void addDeclareVar(void *ptr);
-void addDeclareArray(void *ptr);
-void addDeclareFoo(void *ptr);
+void addDeclareVar(struct ConstNode *ptr);
+int existsVar(char *name);
+void addDeclareArray(struct ConstNode *ptr);
+void addDeclareFoo(struct ConstNode *ptr);
 #endif

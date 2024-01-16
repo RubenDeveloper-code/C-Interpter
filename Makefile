@@ -45,8 +45,14 @@ testUndef:
 	@gcc $(ALL_PRECOMPILER_SRC) $(STATUSCHECK) $(UNTILS) $(TOKENS) $(TEST_UNDEF_DIR)/testundef.c -o $(TEST_UNDEF_DIR)/undef_test.o -I $(INCLUDE) -g -Wall
 	@test/precompiler/undef/testundef.sh
 
-TEST_DECL_DIR = test/astTree/declare
+TEST_DECL_DIR = test/astTree/treeGen
 testASTDecl:
-	@gcc $(ALL_AST_SRC) $(TOKENS) $(UNTILS) $(TEST_DECL_DIR)/testdecl.c -o $(TEST_DECL_DIR)/decl_test.o -I $(INCLUDE) -g -Wall -lssl -lcrypto
-	gdb ./test/astTree/declare/decl_test.o
+	@gcc $(ALL_AST_SRC) $(TOKENS) $(UNTILS) $(TEST_DECL_DIR)/testtree.c -o $(TEST_DECL_DIR)/tree_test.o -I $(INCLUDE) -g -Wall -lssl -lcrypto
+	gdb ./test/astTree/treeGen/tree_test.o;
+
+TEST_READER_TOKENS_DIR = test/astTree/readerTokens
+testTokenReader:
+	@gcc $(TOKENS) src/asttree/readerTokens.c $(TEST_READER_TOKENS_DIR)/main.c -o $(TEST_READER_TOKENS_DIR)/readertest.o -I $(INCLUDE) -g -Wall
+	./test/astTree/readerTokens/readertest.o
+
 

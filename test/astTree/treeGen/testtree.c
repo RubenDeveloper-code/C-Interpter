@@ -4,6 +4,6 @@
 #include <stdio.h>
 
 int main() {
-      struct Node *node = generateFile("test/astTree/declare/main.c");
-      genTree(node, "test/astTree/declare/astTree.dot");
+      struct Node *node = generateFile("test/astTree/treeGen/main.a");
+      genTree(node, "test/astTree/treeGen/astTree.dot");
 }

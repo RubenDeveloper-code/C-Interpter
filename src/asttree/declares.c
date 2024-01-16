@@ -1,13 +1,32 @@
 #include "../../include/asttree/declares.h"
+#include <stdio.h>
+#include <string.h>
+struct ConstNode declaresVar[BUFFSIZE];
+struct ConstNode declaresArr[BUFFSIZE];
+struct ConstNode declaresFoo[BUFFSIZE];
 
-void *declaresVar[BUFFSIZE];
-void *declaresArr[BUFFSIZE];
-void *declaresFoo[BUFFSIZE];
+struct ConstNode *ptrdvar = declaresVar;
+struct ConstNode *ptrdarr = declaresArr;
+struct ConstNode *ptrdfoo = declaresFoo;
 
-void *ptrdvar = declaresVar;
-void *ptrdarr = declaresArr;
-void *ptrdfoo = declaresFoo;
+void addDeclareVar(struct ConstNode *ptr) { *ptrdvar++ = *ptr; }
+void addDeclareArray(struct ConstNode *ptr) {
+      ptrdarr = ptr;
+      ptrdarr++;
+}
+void addDeclareFoo(struct ConstNode *ptr) {
+      ptrdfoo = ptr;
+      ptrdfoo++;
+}
 
-void addDeclareVar(void *ptr) { ptrdvar = ptr; }
-void addDeclareArray(void *ptr) { ptrdarr = ptr; }
-void addDeclareFoo(void *ptr) { ptrdfoo = ptr; }
+int existsVar(char *name) {
+      struct ConstNode *local_ptr = declaresVar;
+      int index = 0;
+      while (local_ptr != NULL) {
+            if (strcmp(local_ptr->VAL.STRING, name) == 0)
+                  return index;
+            index++;
+            local_ptr++;
+      }
+      return -1;
+}

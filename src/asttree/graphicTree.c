@@ -8,7 +8,7 @@
 
 char *BINARYNODESTOSTRING[] = {"DECL", "DEF", "IF", "WHILE"};
 char *SUPERNODETOSTRING[] = {"GLOBAL", "BODYFOO", "BODY"};
-char *CONSTNODETOSTRING[] = {"INT", "CHAR", "STRING", "FLOAT"};
+char *CONSTNODETOSTRING[] = {"INT", "CHAR", "STRING", "FLOAT", "ACCESS_VAR"};
 
 int genRandomId() {
       unsigned char buff[4];
@@ -37,22 +37,29 @@ void start(struct Node *node, FILE *STREAM_OUT, int id) {
             struct SuperNode *superNode = node->node;
             for (int i = 0; i < superNode->contNodes; i++) {
                   unsigned int randomIDchild = genRandomId();
-                  fprintf(STREAM_OUT, "%s%u -> %s%u\n",
-                          SUPERNODETOSTRING[superNode->type], id,
-                          nextNodeData(superNode->nodes[i]), randomIDchild);
-                  start(superNode->nodes[i], STREAM_OUT, randomIDchild);
+                  if (superNode->nodes[i] != NULL) {
+                        fprintf(STREAM_OUT, "%s%u -> %s%u\n",
+                                SUPERNODETOSTRING[superNode->type], id,
+                                nextNodeData(superNode->nodes[i]),
+                                randomIDchild);
+                        start(superNode->nodes[i], STREAM_OUT, randomIDchild);
+                  }
             }
       } else if (node->type == BINARYNODE) {
             unsigned int randomIDchild = genRandomId();
             struct BinaryNode *binaryNode = node->node;
-            fprintf(STREAM_OUT, "%s%u -> %s%u\n",
-                    BINARYNODESTOSTRING[binaryNode->type], id,
-                    nextNodeData(binaryNode->left), randomIDchild);
-            start(binaryNode->left, STREAM_OUT, randomIDchild);
-            fprintf(STREAM_OUT, "%s%u -> %s%u\n",
-                    BINARYNODESTOSTRING[binaryNode->type], id,
-                    nextNodeData(binaryNode->right), randomIDchild);
-            start(binaryNode->right, STREAM_OUT, randomIDchild);
+            if (binaryNode->left != NULL) {
+                  fprintf(STREAM_OUT, "%s%u -> %s%u\n",
+                          BINARYNODESTOSTRING[binaryNode->type], id,
+                          nextNodeData(binaryNode->left), randomIDchild);
+                  start(binaryNode->left, STREAM_OUT, randomIDchild);
+            }
+            if (binaryNode->right != NULL) {
+                  fprintf(STREAM_OUT, "%s%u -> %s%u\n",
+                          BINARYNODESTOSTRING[binaryNode->type], id,
+                          nextNodeData(binaryNode->right), randomIDchild);
+                  start(binaryNode->right, STREAM_OUT, randomIDchild);
+            }
       }
 }
 

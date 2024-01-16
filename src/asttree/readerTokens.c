@@ -1,6 +1,7 @@
 #include "../../include/asttree/readerTokens.h"
 #include "../../include/tokens.h"
 #include <ctype.h>
+#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
@@ -14,17 +15,19 @@ char *getToken(char *line, int typeRead, int indexStart, int ofs) {
             offset = 0;
             return NULL;
       }
-      char *token = malloc(sizeof(char) * BUFFSIZE);
+      char *token;
       char *ptr_line = line + offset;
       char *ptr;
-      if (*line == TOKENS.SPACE)
-            ptr_line++;
       do {
-            ptr = token;
-            while (
-                (isalnum(*ptr = *ptr_line) || *ptr_line == TOKENS.UNDERSCORE)) {
+            ptr = token = malloc(sizeof(char) * BUFFSIZE);
+            if (*ptr_line == TOKENS.SPACE)
                   ptr_line++;
-                  ptr++;
+            if (!isalnum(*ptr_line)) {
+                  *ptr++ = *ptr_line++;
+                  continue;
+            }
+            while ((isalnum(*ptr_line) || *ptr_line == TOKENS.UNDERSCORE)) {
+                  *ptr++ = *ptr_line++;
             }
       } while (typeRead == LEND && --indexStart >= 0);
       if (*(ptr - 1) == TOKENS.END_LINE)
@@ -38,12 +41,25 @@ char *getToken(char *line, int typeRead, int indexStart, int ofs) {
 void freeOffset() { getToken(NULL, 0, 0, -1); }
 
 int getNTokens(char *line) {
+      // int a=10;
       char *ptr_line = line;
       int cont = 0;
-      while (*ptr_line++ == TOKENS.SPACE) {
+      if (*ptr_line == TOKENS.ZERO_END)
+            return 0;
+      do {
+            if (*ptr_line == TOKENS.SPACE)
+                  ptr_line++;
+            if (!isalnum(*ptr_line)) {
+                  ptr_line++;
+
+            } else {
+                  while (isalnum(*ptr_line) || *ptr_line == TOKENS.UNDERSCORE)
+                        ptr_line++;
+            }
             cont++;
-      }
-      return cont + 1;
+      } while (*ptr_line != TOKENS.JUMP_LINE && *ptr_line != TOKENS.ZERO_END);
+      printf("->end token index: %i\n", cont);
+      return cont - 1;
 }
 
 char *getNextToken(char *line) { return getToken(line, GETT, 0, 0); }
