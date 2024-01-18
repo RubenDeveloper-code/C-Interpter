@@ -3,6 +3,7 @@
 
 #include "nodes.h"
 #define BUFFSIZE 2048
+
 extern struct ConstNode declaresVar[];
 extern struct ConstNode declaresArr[];
 extern struct ConstNode declaresFoo[];

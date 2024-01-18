@@ -15,6 +15,10 @@ struct Token {
       const char BRACKET_OPEN;
       const char BRACKET_CLOSED;
       const char EQUAL;
+      const char ADD;
+      const char RES;
+      const char MULT;
+      const char DIV;
 };
 
 struct ReservedWords {

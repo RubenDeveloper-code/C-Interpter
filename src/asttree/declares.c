@@ -1,5 +1,6 @@
 #include "../../include/asttree/declares.h"
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 struct ConstNode declaresVar[BUFFSIZE];
 struct ConstNode declaresArr[BUFFSIZE];
@@ -23,7 +24,7 @@ int existsVar(char *name) {
       struct ConstNode *local_ptr = declaresVar;
       int index = 0;
       while (local_ptr != NULL) {
-            if (strcmp(local_ptr->VAL.STRING, name) == 0)
+            if (strcmp(local_ptr->value, name) == 0)
                   return index;
             index++;
             local_ptr++;

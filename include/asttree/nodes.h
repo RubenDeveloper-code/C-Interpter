@@ -4,8 +4,8 @@
 enum TypeNode { SUPERNODE, BINARYNODE, CONSTNODE };
 
 enum TypeSuperNode { GLOBAL, BODYFOO, BODY };
-enum TypeBinaryNode { DECL, DEF, IF, WHILE };
-enum TypeConstNode { INT, CHAR, STRING, FLOAT, ACCESS_VAR };
+enum TypeBinaryNode { DECL, DEF, IF, WHILE, ADD, RES, MULT, DIV };
+enum TypeConstNode { INT, CHAR, STRING, FLOAT, VAR, TYPEDATA };
 
 struct Node {
       enum TypeNode type;
@@ -26,12 +26,7 @@ struct BinaryNode {
 
 struct ConstNode {
       enum TypeConstNode type;
-      union {
-            int INTEGER;
-            char CHARACTER;
-            char *STRING;
-            float FLOAT;
-      } VAL;
+      char *value;
 };
 
 #endif

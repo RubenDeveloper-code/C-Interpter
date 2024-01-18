@@ -48,7 +48,7 @@ testUndef:
 TEST_DECL_DIR = test/astTree/treeGen
 testASTDecl:
 	@gcc $(ALL_AST_SRC) $(TOKENS) $(UNTILS) $(TEST_DECL_DIR)/testtree.c -o $(TEST_DECL_DIR)/tree_test.o -I $(INCLUDE) -g -Wall -lssl -lcrypto
-	gdb ./test/astTree/treeGen/tree_test.o;
+	@$(TEST_DECL_DIR)/seetree.sh
 
 TEST_READER_TOKENS_DIR = test/astTree/readerTokens
 testTokenReader:

@@ -22,7 +22,7 @@ extern int variableIndex;
 char *getDefineVariable(FILE *stream);
 char *getDefineValue(FILE *stream);
 int addVariableAndValue(char *VARIABLE, char *VALUE);
-int existsVar(const char *VARIABLE);
+int existsDef(const char *VARIABLE);
 int undefVar(const char *VARIABLE);
 void clearDefines();
 

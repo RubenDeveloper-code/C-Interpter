@@ -6,9 +6,11 @@
 #include <stdlib.h>
 #include <string.h>
 
-char *BINARYNODESTOSTRING[] = {"DECL", "DEF", "IF", "WHILE"};
+char *BINARYNODESTOSTRING[] = {"DECL", "DEF", "IF",   "WHILE",
+                               "ADD",  "RES", "MULT", "DIV"};
 char *SUPERNODETOSTRING[] = {"GLOBAL", "BODYFOO", "BODY"};
-char *CONSTNODETOSTRING[] = {"INT", "CHAR", "STRING", "FLOAT", "ACCESS_VAR"};
+char *CONSTNODETOSTRING[] = {"INT",   "CHAR", "STRING",
+                             "FLOAT", "VAR",  "TYPEDATA"};
 
 int genRandomId() {
       unsigned char buff[4];
@@ -29,7 +31,6 @@ void genTree(void *fatherNode, char *outFile) {
       }
 }
 
-// forma2 pipipipi
 void start(struct Node *node, FILE *STREAM_OUT, int id) {
       if (node == NULL)
             return;
@@ -57,8 +58,8 @@ void start(struct Node *node, FILE *STREAM_OUT, int id) {
             if (binaryNode->right != NULL) {
                   fprintf(STREAM_OUT, "%s%u -> %s%u\n",
                           BINARYNODESTOSTRING[binaryNode->type], id,
-                          nextNodeData(binaryNode->right), randomIDchild);
-                  start(binaryNode->right, STREAM_OUT, randomIDchild);
+                          nextNodeData(binaryNode->right), randomIDchild + 1);
+                  start(binaryNode->right, STREAM_OUT, randomIDchild + 1);
             }
       }
 }
@@ -74,8 +75,9 @@ char *nextNodeData(struct Node *node) {
             res = strdup(BINARYNODESTOSTRING[bn->type]);
       }
       if (node->type == CONSTNODE) {
-            struct SuperNode *cn = node->node;
-            res = strdup(CONSTNODETOSTRING[cn->type]);
+            struct ConstNode *cn = node->node;
+            snprintf(res, 100, "%sX%sX", CONSTNODETOSTRING[cn->type],
+                     cn->value);
       }
       return res;
 }

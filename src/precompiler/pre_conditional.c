@@ -4,4 +4,4 @@
 #include <stdlib.h>
 #include <string.h>
 
-int isDefined(char *token) { return existsVar(token); }
+int isDefined(char *token) { return existsDef(token); }

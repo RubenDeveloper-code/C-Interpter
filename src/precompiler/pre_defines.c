@@ -195,7 +195,7 @@ int addVariableAndValue(char *VARIABLE, char *VALUE) {
 
 int undefVar(const char *VARIABLE) {
       int undefined = 0;
-      if (existsVar(VARIABLE)) {
+      if (existsDef(VARIABLE)) {
             for (int i = 0; i < variableIndex && !undefined; i++) {
                   if (strcmp(VARIABLE, DEFINES[i]->name) == 0) {
                         DEFINES[i]->valid = INVALID;
@@ -206,7 +206,7 @@ int undefVar(const char *VARIABLE) {
       return undefined;
 }
 
-int existsVar(const char *VARIABLE) {
+int existsDef(const char *VARIABLE) {
       int exists = 0;
       for (int i = 0; i < variableIndex && !exists; i++) {
             printf("consulta: |%s| defines: |%s|", VARIABLE, DEFINES[i]->name);

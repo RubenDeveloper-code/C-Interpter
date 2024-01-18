@@ -12,6 +12,7 @@
 #include <string.h>
 
 #define BUFFSIZE 2048
+#define NONE -1
 
 struct SuperNode *GLOBAL_NODE;
 
@@ -25,9 +26,8 @@ void *generateFile(char *file) {
       char *line;
       do {
             line = getLine(STREAM);
-            addtoGlobalNode(generateNode(line));
+            generateNode(line);
       } while (line[0] != TOKENS.ZERO_END);
-      GLOBAL_NODE->contNodes--;
       genericNode->type = SUPERNODE;
       genericNode->node = GLOBAL_NODE;
       return genericNode;
@@ -37,112 +37,167 @@ void addtoGlobalNode(void *Node) {
       GLOBAL_NODE->nodes[GLOBAL_NODE->contNodes++] = Node;
 }
 
-void *generateNode(char *line) {
-      char *token = getNextToken(line);
-      void *node;
-      if (nodeType(token) == BINARYNODE) {
-            switch (filterTypeNodeBin(line)) {
-            case DECL: {
-                  node = genDeclNode(line);
-                  break;
-            }
-            case DEF: {
-                  int typedata = -1;
-                  if ((typedata = isTypeData(token)) != -1) {
-                        addtoGlobalNode(genDeclNode(line));
+void generateNode(char *line) {
+      char *firstToken = getNextToken(line), *token = firstToken;
+      while (*token != TOKENS.ZERO_END && *token != TOKENS.END_LINE) {
+            if (nodeType(token) == BINARYNODE) {
+                  enum TypeBinaryNode typeBinNode = filterTypeNodeBin(line);
+                  if (typeBinNode == DECL) {
+                        addtoGlobalNode(
+                            genDeclNode(isTypeData(firstToken), line));
+                  } else if (typeBinNode == DEF) {
+                        addtoGlobalNode(
+                            genDefNode(line, isTypeData(firstToken), token));
                   }
-                  node = genDefNode(line, typedata);
-                  break;
             }
-            case IF: {
-                  break;
-            }
-            case WHILE: {
-                  break;
-            }
-            }
+            token = getNextToken(line);
       }
       freeOffset();
-      return node;
-}
-void *genDefNode(char *line, enum TypeConstNode typedata) {
-      char *name = strdup(getNextToken(line));
-      getNextToken(line);
-      struct ConstNode *var = malloc(sizeof(struct ConstNode));
-      struct ConstNode *value = malloc(sizeof(struct ConstNode));
-      struct BinaryNode *defbin = malloc(sizeof(struct BinaryNode));
-
-      struct Node *def = malloc(sizeof(struct Node));
-      struct Node *left = malloc(sizeof(struct Node));
-      struct Node *right = malloc(sizeof(struct Node));
-
-      var->type = ACCESS_VAR;
-      if (existsVar(name) != -1) {
-            var->VAL.STRING = name;
-      } else {
-            // Syntax error
-            return NULL;
-      }
-      left->type = CONSTNODE;
-      left->node = var;
-
-      value->type = typedata;
-      value->VAL.STRING = strdup(getNextToken(line));
-      right->type = CONSTNODE;
-      right->node = value;
-
-      defbin->type = DEF;
-      defbin->left = left;
-      defbin->right = right;
-
-      def->type = BINARYNODE;
-      def->node = defbin;
-
-      return def;
 }
 
 // name;
-void *genDeclNode(char *line) {
+void *genDeclNode(enum TypeConstNode td, char *line) {
       char *name = strdup(lendNextToken(line));
       struct ConstNode *typeData = malloc(sizeof(struct ConstNode));
       struct ConstNode *nameData = malloc(sizeof(struct ConstNode));
       struct BinaryNode *dclNode = malloc(sizeof(struct BinaryNode));
 
-      struct Node *decl = malloc(sizeof(struct Node));
-      struct Node *left = malloc(sizeof(struct Node));
-      struct Node *right = malloc(sizeof(struct Node));
+      typeData->type = TYPEDATA;
+      typeData->value = malloc(1);
+      typeData->value[0] = td + '0';
 
-      typeData->type = INT;
-      typeData->VAL.INTEGER = INT;
-      left->type = CONSTNODE;
-      left->node = typeData;
-
-      nameData->type = CHAR;
-      nameData->VAL.STRING = name;
-      right->type = CONSTNODE;
-      right->node = nameData;
+      nameData->type = VAR;
+      nameData->value = name;
 
       dclNode->type = DECL;
-      dclNode->left = left;
-      dclNode->right = right;
-
-      decl->type = BINARYNODE;
-      decl->node = dclNode;
+      dclNode->left = genGenericNode(CONSTNODE, typeData);
+      dclNode->right = genGenericNode(CONSTNODE, nameData);
 
       addDeclareVar(nameData);
-      return decl;
+      return genGenericNode(BINARYNODE, dclNode);
+}
+
+void *genDefNode(char *line, enum TypeConstNode td, char *nameVar) {
+      char *name = nameVar;
+      getNextToken(line);
+      struct ConstNode *var = malloc(sizeof(struct ConstNode));
+      struct Node *value = malloc(sizeof(struct Node));
+      struct BinaryNode *defbin = malloc(sizeof(struct BinaryNode));
+
+      var->type = VAR;
+      if (existsVar(name) != -1) {
+            var->value = strdup(name);
+      } else {
+            // Syntax error
+            return NULL;
+      }
+      enum TypeNode typeNode = NONE;
+      value = genValueNode(td, line, &typeNode);
+      defbin->type = DEF;
+      defbin->left = genGenericNode(CONSTNODE, var);
+      defbin->right = value;
+
+      return genGenericNode(BINARYNODE, defbin);
+}
+
+// Comprobacion de compatibilidad de tipos a la hora de interpretar
+void *genValueNode(enum TypeConstNode td, char *line,
+                   enum TypeNode *typeNodeRes) {
+      struct Node *genericNode = malloc(sizeof(struct Node));
+      char *token = strdup(getNextToken(line));
+      *typeNodeRes = CONSTNODE;
+      if (isalpha(token[0])) {
+            int testVar = existsVar(token);
+            if (testVar != NONE) {
+                  genericNode =
+                      genGenericNode(CONSTNODE, &declaresVar[testVar]);
+                  if (getOpe(lendNextToken(line)) != NONE) {
+                        genericNode = genBinOperationNode(line, token, td);
+                        *typeNodeRes = BINARYNODE;
+                  } else {
+                        return NULL;
+                  }
+            } else {
+                  return NULL;
+            }
+      } else if (isdigit(token[0])) {
+            struct ConstNode *node = malloc(sizeof(struct ConstNode));
+            node->type = INT;
+            node->value = token;
+            genericNode = genGenericNode(CONSTNODE, node);
+            if (getOpe(lendNextToken(line)) != NONE) {
+                  genericNode = genBinOperationNode(line, token, td);
+                  *typeNodeRes = BINARYNODE;
+            }
+      }
+      return genericNode;
+}
+
+// +a...
+void *genBinOperationNode(char *line, char *leftVal, enum TypeConstNode td) {
+      struct BinaryNode *opNode = malloc(sizeof(struct BinaryNode));
+      struct ConstNode *leftope = malloc(sizeof(struct ConstNode));
+      struct ConstNode *rightope = malloc(sizeof(struct ConstNode));
+
+      if (isdigit(leftVal[0])) {
+            leftope->type = td;
+      } else
+            leftope->type = VAR;
+      leftope->value = strdup(leftVal);
+
+      enum TypeBinaryNode typeOp = getOpe(getNextToken(line));
+      opNode->type = typeOp;
+      char *token = getNextToken(line);
+      if (isalpha(token[0])) {
+            int testVar = existsVar(token);
+            if (testVar != NONE) {
+                  rightope = &declaresVar[testVar];
+            } else {
+                  // syntax error
+                  return NULL;
+            }
+      } else if (isdigit(token[0])) {
+            rightope->type = td;
+            rightope->value = token;
+      } else {
+            return NULL;
+      }
+      opNode->left = genGenericNode(CONSTNODE, leftope);
+      if (getOpe(lendNextToken(line)) != NONE) {
+            opNode->right = genBinOperationNode(line, token, td);
+      } else {
+            opNode->right = genGenericNode(CONSTNODE, rightope);
+      }
+      return genGenericNode(BINARYNODE, opNode);
+}
+
+int getOpe(char *token) {
+      if (token[0] == TOKENS.ADD)
+            return ADD;
+      if (token[0] == TOKENS.RES)
+            return RES;
+      if (token[0] == TOKENS.MULT)
+            return MULT;
+      if (token[0] == TOKENS.DIV)
+            return DIV;
+      return NONE;
+}
+
+void *genGenericNode(enum TypeNode type, void *node) {
+      struct Node *genericNode = malloc(sizeof(struct Node));
+      genericNode->type = type;
+      genericNode->node = node;
+      return genericNode;
 }
 
 int nodeType(char *token) {
-      if (isTypeData(token) != -1)
-            return BINARYNODE;
-      return -1;
+      // se preguntara por tokens
+      return BINARYNODE;
 }
-
+// int a = c+b
 enum TypeBinaryNode filterTypeNodeBin(char *line) {
       enum TypeBinaryNode nodetype = 0;
-      char *temp = lendToken(line, 2);
-      if (lendToken(line, 1)[0] != TOKENS.EQUAL) {
+      if (lendToken(line, 0)[0] != TOKENS.EQUAL) {
             nodetype = DECL;
       } else {
             nodetype = DEF;
@@ -152,11 +207,11 @@ enum TypeBinaryNode filterTypeNodeBin(char *line) {
 
 int isTypeData(char *token) {
       if (strcmp(token, RESERVED_WORDS._INT_) == 0)
-            return TYPE_INT;
+            return INT;
       if (strcmp(token, RESERVED_WORDS._CHAR_) == 0)
-            return TYPE_CHAR;
+            return CHAR;
       if (strcmp(token, RESERVED_WORDS._FLOAT_) == 0)
-            return TYPE_FLOAT;
+            return FLOAT;
       return -1;
 }
 
