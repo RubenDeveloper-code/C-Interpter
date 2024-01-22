@@ -1,61 +1,35 @@
-#include "../../include/asttree/generator.h"
-#include "../../include/asttree/astTokens.h"
+#include "../../include/asttree/genNodes.h"
 #include "../../include/asttree/declares.h"
-#include "../../include/asttree/nodes.h"
+#include "../../include/asttree/filters.h"
 #include "../../include/asttree/readerTokens.h"
 #include "../../include/tokens.h"
-#include "../../include/untils.h"
-
-#include <ctype.h>
-#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-
-#define BUFFSIZE 2048
-#define NONE -1
+#define BUFNODES 2048
+#include <ctype.h>
 
 struct SuperNode *GLOBAL_NODE;
 
-void *generateFile(char *file) {
-      struct Node *genericNode = malloc(sizeof(struct Node));
-      GLOBAL_NODE = malloc(sizeof(struct SuperNode));
-      GLOBAL_NODE->nodes = malloc(sizeof(void *) * BUFFSIZE);
-      FILE *STREAM = fopen(file, "r");
-      if (file == NULL)
-            return NULL;
-      char *line;
-      do {
-            line = getLine(STREAM);
-            generateNode(line);
-      } while (line[0] != TOKENS.ZERO_END);
-      genericNode->type = SUPERNODE;
-      genericNode->node = GLOBAL_NODE;
-      return genericNode;
-}
-
-void addtoGlobalNode(void *Node) {
-      GLOBAL_NODE->nodes[GLOBAL_NODE->contNodes++] = Node;
-}
-
 void generateNode(char *line) {
       char *firstToken = getNextToken(line), *token = firstToken;
-      while (*token != TOKENS.ZERO_END && *token != TOKENS.END_LINE) {
-            if (nodeType(token) == BINARYNODE) {
-                  enum TypeBinaryNode typeBinNode = filterTypeNodeBin(line);
+      while (*token != TOKENS.ZERO_END && *token != TOKENS.END_LINE &&
+             *token != TOKENS.OPEN_KEY) {
+            if (_nodeType(token) == BINARYNODE) {
+                  enum TypeBinaryNode typeBinNode = _typeNodeBin(line);
                   if (typeBinNode == DECL) {
                         addtoGlobalNode(
-                            genDeclNode(isTypeData(firstToken), line));
+                            genDeclNode(_typeData(firstToken), line));
                   } else if (typeBinNode == DEF) {
                         addtoGlobalNode(
-                            genDefNode(line, isTypeData(firstToken), token));
+                            genDefNode(line, _typeData(firstToken), token));
+                  } else if (typeBinNode == IF) {
+                        addtoGlobalNode(genIfNode(line));
                   }
             }
             token = getNextToken(line);
       }
       freeOffset();
 }
-
-// name;
 void *genDeclNode(enum TypeConstNode td, char *line) {
       char *name = strdup(lendNextToken(line));
       struct ConstNode *typeData = malloc(sizeof(struct ConstNode));
@@ -91,8 +65,7 @@ void *genDefNode(char *line, enum TypeConstNode td, char *nameVar) {
             // Syntax error
             return NULL;
       }
-      enum TypeNode typeNode = NONE;
-      value = genValueNode(td, line, &typeNode);
+      value = genValueNode(td, line);
       defbin->type = DEF;
       defbin->left = genGenericNode(CONSTNODE, var);
       defbin->right = value;
@@ -101,21 +74,16 @@ void *genDefNode(char *line, enum TypeConstNode td, char *nameVar) {
 }
 
 // Comprobacion de compatibilidad de tipos a la hora de interpretar
-void *genValueNode(enum TypeConstNode td, char *line,
-                   enum TypeNode *typeNodeRes) {
+void *genValueNode(enum TypeConstNode td, char *line) {
       struct Node *genericNode = malloc(sizeof(struct Node));
       char *token = strdup(getNextToken(line));
-      *typeNodeRes = CONSTNODE;
       if (isalpha(token[0])) {
             int testVar = existsVar(token);
             if (testVar != NONE) {
                   genericNode =
                       genGenericNode(CONSTNODE, &declaresVar[testVar]);
-                  if (getOpe(lendNextToken(line)) != NONE) {
+                  if (_operationType(lendNextToken(line)) != NONE) {
                         genericNode = genBinOperationNode(line, token, td);
-                        *typeNodeRes = BINARYNODE;
-                  } else {
-                        return NULL;
                   }
             } else {
                   return NULL;
@@ -125,9 +93,8 @@ void *genValueNode(enum TypeConstNode td, char *line,
             node->type = INT;
             node->value = token;
             genericNode = genGenericNode(CONSTNODE, node);
-            if (getOpe(lendNextToken(line)) != NONE) {
+            if (_operationType(lendNextToken(line)) != NONE) {
                   genericNode = genBinOperationNode(line, token, td);
-                  *typeNodeRes = BINARYNODE;
             }
       }
       return genericNode;
@@ -145,7 +112,7 @@ void *genBinOperationNode(char *line, char *leftVal, enum TypeConstNode td) {
             leftope->type = VAR;
       leftope->value = strdup(leftVal);
 
-      enum TypeBinaryNode typeOp = getOpe(getNextToken(line));
+      enum TypeBinaryNode typeOp = _operationType(getNextToken(line));
       opNode->type = typeOp;
       char *token = getNextToken(line);
       if (isalpha(token[0])) {
@@ -163,7 +130,7 @@ void *genBinOperationNode(char *line, char *leftVal, enum TypeConstNode td) {
             return NULL;
       }
       opNode->left = genGenericNode(CONSTNODE, leftope);
-      if (getOpe(lendNextToken(line)) != NONE) {
+      if (_operationType(lendNextToken(line)) != NONE) {
             opNode->right = genBinOperationNode(line, token, td);
       } else {
             opNode->right = genGenericNode(CONSTNODE, rightope);
@@ -171,16 +138,37 @@ void *genBinOperationNode(char *line, char *leftVal, enum TypeConstNode td) {
       return genGenericNode(BINARYNODE, opNode);
 }
 
-int getOpe(char *token) {
-      if (token[0] == TOKENS.ADD)
-            return ADD;
-      if (token[0] == TOKENS.RES)
-            return RES;
-      if (token[0] == TOKENS.MULT)
-            return MULT;
-      if (token[0] == TOKENS.DIV)
-            return DIV;
-      return NONE;
+void *genIfNode(char *line) {
+      struct SuperNode *bodyNode = malloc(sizeof(struct SuperNode));
+      struct BinaryNode *ifNode = malloc(sizeof(struct SuperNode));
+      bodyNode->type = BODY;
+      bodyNode->nodes = malloc(sizeof(struct Node) * BUFNODES);
+      bodyNode->contNodes = 0;
+      ifNode->type = IF;
+      ifNode->left = genConditionalNode(line);
+      ifNode->right = genGenericNode(SUPERNODE, bodyNode);
+      return genGenericNode(BINARYNODE, ifNode);
+}
+
+void *genConditionalNode(char *line) {
+      char *startcondition;
+      int parse;
+      struct BinaryNode *conditionNodeBin = malloc(sizeof(struct BinaryNode));
+      while ((startcondition = lendNextToken(line))[0] ==
+             TOKENS.OPEN_PARENTHESIS)
+            getNextToken(line);
+      ;
+
+      void *buf = genValueNode(INT, line);
+      int condition = _conditional(getNextToken(line), line);
+      if (condition != NONE) {
+            conditionNodeBin->left = buf;
+            conditionNodeBin->type = condition;
+            conditionNodeBin->right = genConditionalNode(line);
+      } else {
+            return buf;
+      }
+      return genGenericNode(BINARYNODE, conditionNodeBin);
 }
 
 void *genGenericNode(enum TypeNode type, void *node) {
@@ -189,49 +177,6 @@ void *genGenericNode(enum TypeNode type, void *node) {
       genericNode->node = node;
       return genericNode;
 }
-
-int nodeType(char *token) {
-      // se preguntara por tokens
-      return BINARYNODE;
-}
-// int a = c+b
-enum TypeBinaryNode filterTypeNodeBin(char *line) {
-      enum TypeBinaryNode nodetype = 0;
-      if (lendToken(line, 0)[0] != TOKENS.EQUAL) {
-            nodetype = DECL;
-      } else {
-            nodetype = DEF;
-      }
-      return nodetype;
-}
-
-int isTypeData(char *token) {
-      if (strcmp(token, RESERVED_WORDS._INT_) == 0)
-            return INT;
-      if (strcmp(token, RESERVED_WORDS._CHAR_) == 0)
-            return CHAR;
-      if (strcmp(token, RESERVED_WORDS._FLOAT_) == 0)
-            return FLOAT;
-      return -1;
-}
-
-char *getLine(FILE *STREAM) {
-      char *line = malloc(sizeof(char) * BUFFSIZE);
-      char *ptr_line = line, token;
-      while ((token = fgetc(STREAM)) != TOKENS.END_LINE && token != EOF) {
-            *ptr_line++ = token;
-      }
-      *ptr_line = TOKENS.ZERO_END;
-      char *final_line = malloc(sizeof(char) * BUFFSIZE);
-      char *ptr_final_line = final_line;
-      ptr_line = line;
-      while (*ptr_line != TOKENS.ZERO_END) {
-            if (*ptr_line != TOKENS.JUMP_LINE) {
-                  *ptr_final_line = *ptr_line;
-                  ptr_final_line++;
-            }
-            ptr_line++;
-      }
-      *ptr_final_line = TOKENS.ZERO_END;
-      return final_line;
+void addtoGlobalNode(void *Node) {
+      GLOBAL_NODE->nodes[GLOBAL_NODE->contNodes++] = Node;
 }

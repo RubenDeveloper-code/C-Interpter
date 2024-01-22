@@ -4,7 +4,25 @@
 enum TypeNode { SUPERNODE, BINARYNODE, CONSTNODE };
 
 enum TypeSuperNode { GLOBAL, BODYFOO, BODY };
-enum TypeBinaryNode { DECL, DEF, IF, WHILE, ADD, RES, MULT, DIV };
+enum TypeBinaryNode {
+      DECL,
+      DEF,
+      IF,
+      WHILE,
+      ADD,
+      RES,
+      MULT,
+      DIV,
+      AND,
+      OR,
+      EQ,
+      GEQ,
+      LEQ,
+      NEQ,
+      GT,
+      LT
+
+};
 enum TypeConstNode { INT, CHAR, STRING, FLOAT, VAR, TYPEDATA };
 
 struct Node {

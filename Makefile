@@ -19,7 +19,7 @@ TOKENS = src/tokens.c
 
 UNTILS = src/untils.c
 
-ALL_AST_SRC = src/asttree/*
+ALL_AST_SRC = src/asttree/*.c
 
 
 tests: testIncludes testDefines testConditions testUndef

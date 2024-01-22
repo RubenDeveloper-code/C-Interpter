@@ -10,7 +10,11 @@ struct ConstNode *ptrdvar = declaresVar;
 struct ConstNode *ptrdarr = declaresArr;
 struct ConstNode *ptrdfoo = declaresFoo;
 
-void addDeclareVar(struct ConstNode *ptr) { *ptrdvar++ = *ptr; }
+int contVars = 0;
+void addDeclareVar(struct ConstNode *ptr) {
+      *ptrdvar++ = *ptr;
+      contVars++;
+}
 void addDeclareArray(struct ConstNode *ptr) {
       ptrdarr = ptr;
       ptrdarr++;
@@ -23,11 +27,9 @@ void addDeclareFoo(struct ConstNode *ptr) {
 int existsVar(char *name) {
       struct ConstNode *local_ptr = declaresVar;
       int index = 0;
-      while (local_ptr != NULL) {
-            if (strcmp(local_ptr->value, name) == 0)
-                  return index;
-            index++;
-            local_ptr++;
+      for (int i = 0; i < contVars; i++) {
+            if (strcmp(local_ptr[i].value, name) == 0)
+                  return i;
       }
       return -1;
 }

@@ -19,12 +19,25 @@ struct Token {
       const char RES;
       const char MULT;
       const char DIV;
+      const char OPEN_KEY;
+      const char CLOSED_KEY;
+      const char LT_SIMBOL;
+      const char GT_SIMBOL;
+      const char *AND;
+      const char *OR;
+      const char NEGATION;
+      const char *EQUALITY;
+      const char *GT_OR_EQ;
+      const char *LT_OR_EQ;
+      const char *NO_EQUAL;
 };
 
 struct ReservedWords {
       const char *_INT_;
       const char *_CHAR_;
       const char *_FLOAT_;
+      const char *_IF_;
+      const char *_ELSE_;
 };
 
 extern struct Token TOKENS;

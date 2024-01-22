@@ -8,6 +8,7 @@
 #define BUFFSIZE 2048
 #define GETT 0
 #define LEND 1
+#define FREE 2
 
 char *getToken(char *line, int typeRead, int indexStart, int ofs) {
       static int offset = 0;
@@ -16,7 +17,8 @@ char *getToken(char *line, int typeRead, int indexStart, int ofs) {
             return NULL;
       }
       char *token;
-      char *ptr_line = line + offset;
+
+      char *ptr_line = (typeRead == FREE) ? line : line + offset;
       char *ptr;
       do {
             ptr = token = malloc(sizeof(char) * BUFFSIZE);
@@ -29,7 +31,7 @@ char *getToken(char *line, int typeRead, int indexStart, int ofs) {
             while ((isalnum(*ptr_line) || *ptr_line == TOKENS.UNDERSCORE)) {
                   *ptr++ = *ptr_line++;
             }
-      } while (typeRead == LEND && --indexStart >= 0);
+      } while (typeRead == FREE && --indexStart >= 0);
       if (*(ptr - 1) == TOKENS.END_LINE)
             offset = 0;
       *ptr = TOKENS.ZERO_END;
@@ -64,10 +66,8 @@ int getNTokens(char *line) {
 
 char *getNextToken(char *line) { return getToken(line, GETT, 0, 0); }
 char *lendNextToken(char *line) { return getToken(line, LEND, 0, 0); }
-char *lendFirstToken(char *line) { return getToken(line, LEND, 0, 0); }
-char *lendToken(char *line, int index) {
-      return getToken(line, LEND, index, 0);
-}
-char *lendLastToken(char *line) {
-      return getToken(line, LEND, getNTokens(line), 0);
+char *firstTokenIn(char *line) { return getToken(line, FREE, 0, 0); }
+char *tokenIn(char *line, int index) { return getToken(line, FREE, index, 0); }
+char *lastTokenIn(char *line) {
+      return getToken(line, FREE, getNTokens(line), 0);
 }

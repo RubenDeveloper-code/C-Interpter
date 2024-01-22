@@ -5,9 +5,9 @@
 
 char *getNextToken(char *line);
 char *lendNextToken(char *line);
-char *lendLastToken(char *line);
-char *lendFirstToken(char *line);
-char *lendToken(char *line, int index);
+char *lastTokenIn(char *line);
+char *firstTokenIn(char *line);
+char *tokenIn(char *line, int index);
 void freeOffset();
 
 #endif

@@ -1,13 +1,13 @@
 #include "../../include/asttree/graphicTree.h"
-#include "../../include/asttree/generator.h"
 #include "../../include/asttree/nodes.h"
 #include <openssl/rand.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
-char *BINARYNODESTOSTRING[] = {"DECL", "DEF", "IF",   "WHILE",
-                               "ADD",  "RES", "MULT", "DIV"};
+char *BINARYNODESTOSTRING[] = {"DECL", "DEF", "IF",  "WHILE", "ADD", "RES",
+                               "MULT", "DIV", "AND", "OR",    "EQ",  "GEQ",
+                               "LEQ",  "NEQ", "GT",  "LT"};
 char *SUPERNODETOSTRING[] = {"GLOBAL", "BODYFOO", "BODY"};
 char *CONSTNODETOSTRING[] = {"INT",   "CHAR", "STRING",
                              "FLOAT", "VAR",  "TYPEDATA"};
