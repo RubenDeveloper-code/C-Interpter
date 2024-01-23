@@ -1,7 +1,7 @@
 #ifndef __FILTERS_H__
 #define __FILTERS_H__
 
-#define START_CONDITIONS 8
+#define START_CONDITIONS 7
 #define NONE -1
 
 enum Conditions {
@@ -16,11 +16,10 @@ enum Conditions {
 };
 enum Typedata { _INT_, _CHAR_, _STRING_, _FLOAT_ };
 
-int _nodeType(char *token);
 int _operationType(char *token);
 int _typeData(char *token);
 int _conditional(char *token, char *line);
 
-enum TypeNode _typeNode(char *token);
-enum TypeBinaryNode _typeNodeBin(char *line);
+enum TypeBinaryNode _typeNodeBin(char *line, char *token);
+enum TypeSuperNode _typeSuperNode(char *line, char *token);
 #endif

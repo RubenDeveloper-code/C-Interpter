@@ -32,8 +32,9 @@ char *getToken(char *line, int typeRead, int indexStart, int ofs) {
                   *ptr++ = *ptr_line++;
             }
       } while (typeRead == FREE && --indexStart >= 0);
-      if (*(ptr - 1) == TOKENS.END_LINE)
+      if (*(ptr) == TOKENS.END_LINE) {
             offset = 0;
+      }
       *ptr = TOKENS.ZERO_END;
       if (typeRead == GETT)
             offset = strlen(line) - strlen(ptr_line);
@@ -68,6 +69,9 @@ char *getNextToken(char *line) { return getToken(line, GETT, 0, 0); }
 char *lendNextToken(char *line) { return getToken(line, LEND, 0, 0); }
 char *firstTokenIn(char *line) { return getToken(line, FREE, 0, 0); }
 char *tokenIn(char *line, int index) { return getToken(line, FREE, index, 0); }
+void skipNextToken(char *line, char *__FOR_PREVIEW_ONLY__) {
+      getToken(line, GETT, 0, 0);
+}
 char *lastTokenIn(char *line) {
       return getToken(line, FREE, getNTokens(line), 0);
 }

@@ -39,24 +39,25 @@ int _operationType(char *token) {
       return NONE;
 }
 
-int _nodeType(char *token) {
-      // if (isTypeData(token) != NONE || token == RESERVED_WORDS._IF_)
-      return BINARYNODE;
-      // return NONE;
-}
 // int a = c+b
-enum TypeBinaryNode _typeNodeBin(char *line) {
+enum TypeBinaryNode _typeNodeBin(char *line, char *token) {
       enum TypeBinaryNode nodetype = NONE;
-      if (_typeData(firstTokenIn(line)) != NONE) {
-            if (existsVar(tokenIn(line, 1)) == NONE) {
+      if (_typeData(token) != NONE) {
+            if (existsVar(lendNextToken(line)) == NONE)
                   nodetype = DECL;
-            } else if (tokenIn(line, 2)[0] == TOKENS.EQUAL) {
-                  nodetype = DEF;
-            }
-      } else if (strcmp(firstTokenIn(line), RESERVED_WORDS._IF_) == 0)
-            nodetype = IF;
-
+            else /**error**/
+                  ;
+      } else if (lendNextToken(line)[0] == TOKENS.EQUAL) {
+            nodetype = DEF;
+      }
       return nodetype;
+}
+
+enum TypeSuperNode _typeSuperNode(char *line, char *token) {
+      enum TypeSuperNode tsn = NONE;
+      if (strcmp(token, RESERVED_WORDS._IF_) == 0)
+            tsn = IF;
+      return tsn;
 }
 
 int _typeData(char *token) {

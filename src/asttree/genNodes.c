@@ -8,23 +8,32 @@
 #define BUFNODES 2048
 #include <ctype.h>
 
-struct SuperNode *GLOBAL_NODE;
-
+struct SuperNode *firstCaseNewScope, *secondCaseNewScope;
 void generateNode(char *line) {
       char *firstToken = getNextToken(line), *token = firstToken;
-      while (*token != TOKENS.ZERO_END && *token != TOKENS.END_LINE &&
-             *token != TOKENS.OPEN_KEY) {
-            if (_nodeType(token) == BINARYNODE) {
-                  enum TypeBinaryNode typeBinNode = _typeNodeBin(line);
+      while (*token != TOKENS.ZERO_END && *token != TOKENS.END_LINE) {
+            // typebinNode ps ya no if es super
+            enum TypeBinaryNode typeBinNode = _typeNodeBin(line, token);
+            enum TypeSuperNode typeSuperNode = _typeSuperNode(line, token);
+            if (typeBinNode != NONE) {
                   if (typeBinNode == DECL) {
-                        addtoGlobalNode(
+                        addtoCurrentSuperNode(
                             genDeclNode(_typeData(firstToken), line));
                   } else if (typeBinNode == DEF) {
-                        addtoGlobalNode(
+                        addtoCurrentSuperNode(
                             genDefNode(line, _typeData(firstToken), token));
-                  } else if (typeBinNode == IF) {
-                        addtoGlobalNode(genIfNode(line));
                   }
+            } else if (typeSuperNode != NONE) {
+                  if (typeSuperNode == IF) {
+                        addtoCurrentSuperNode(genIfNode(
+                            line, &firstCaseNewScope, &secondCaseNewScope));
+                  }
+            } else if (token[0] == TOKENS.OPEN_KEY) {
+                  changeToNewScope(firstCaseNewScope);
+            } else if (token[0] == TOKENS.CLOSED_KEY) {
+                  goBackScope();
+            } else if (strcmp(token, RESERVED_WORDS._ELSE_) == 0) {
+                  firstCaseNewScope = secondCaseNewScope;
             }
             token = getNextToken(line);
       }
@@ -53,7 +62,7 @@ void *genDeclNode(enum TypeConstNode td, char *line) {
 
 void *genDefNode(char *line, enum TypeConstNode td, char *nameVar) {
       char *name = nameVar;
-      getNextToken(line);
+      skipNextToken(line, "=");
       struct ConstNode *var = malloc(sizeof(struct ConstNode));
       struct Node *value = malloc(sizeof(struct Node));
       struct BinaryNode *defbin = malloc(sizeof(struct BinaryNode));
@@ -100,6 +109,48 @@ void *genValueNode(enum TypeConstNode td, char *line) {
       return genericNode;
 }
 
+void *genIfNode(char *line, struct SuperNode **IfScope,
+                struct SuperNode **ElseScope) {
+      struct SuperNode *bodyNode = malloc(sizeof(struct SuperNode));
+      struct SuperNode *bodyElseNode = malloc(sizeof(struct SuperNode));
+      struct SuperNode *ifNode = malloc(sizeof(struct SuperNode));
+      bodyNode->type = BODY;
+      bodyNode->nodes = malloc(sizeof(struct Node) * BUFNODES);
+      bodyNode->contNodes = 0;
+      bodyElseNode->type = SECONDBODY;
+      bodyElseNode->nodes = malloc(sizeof(struct Node) * BUFNODES);
+      bodyElseNode->contNodes = 0;
+      ifNode->type = IF;
+      ifNode->nodes = malloc(sizeof(struct Node) * 3);
+      ifNode->nodes[0] = genConditionalNode(line);
+      ifNode->nodes[1] = genGenericNode(SUPERNODE, bodyNode);
+      ifNode->nodes[2] = genGenericNode(SUPERNODE, bodyElseNode);
+      ifNode->contNodes = 3;
+      *IfScope = bodyNode;
+      *ElseScope = bodyElseNode;
+      return genGenericNode(SUPERNODE, ifNode);
+}
+
+void *genConditionalNode(char *line) {
+      char *startcondition;
+      int parse;
+      struct BinaryNode *conditionNodeBin = malloc(sizeof(struct BinaryNode));
+      while ((startcondition = lendNextToken(line))[0] ==
+             TOKENS.OPEN_PARENTHESIS)
+            getNextToken(line);
+      ;
+
+      void *buf = genValueNode(INT, line);
+      int condition = _conditional(getNextToken(line), line);
+      if (condition != NONE) {
+            conditionNodeBin->left = buf;
+            conditionNodeBin->type = condition;
+            conditionNodeBin->right = genConditionalNode(line);
+      } else {
+            return buf;
+      }
+      return genGenericNode(BINARYNODE, conditionNodeBin);
+}
 // +a...
 void *genBinOperationNode(char *line, char *leftVal, enum TypeConstNode td) {
       struct BinaryNode *opNode = malloc(sizeof(struct BinaryNode));
@@ -124,7 +175,7 @@ void *genBinOperationNode(char *line, char *leftVal, enum TypeConstNode td) {
                   return NULL;
             }
       } else if (isdigit(token[0])) {
-            rightope->type = td;
+            rightope->type = INT;
             rightope->value = token;
       } else {
             return NULL;
@@ -138,45 +189,17 @@ void *genBinOperationNode(char *line, char *leftVal, enum TypeConstNode td) {
       return genGenericNode(BINARYNODE, opNode);
 }
 
-void *genIfNode(char *line) {
-      struct SuperNode *bodyNode = malloc(sizeof(struct SuperNode));
-      struct BinaryNode *ifNode = malloc(sizeof(struct SuperNode));
-      bodyNode->type = BODY;
-      bodyNode->nodes = malloc(sizeof(struct Node) * BUFNODES);
-      bodyNode->contNodes = 0;
-      ifNode->type = IF;
-      ifNode->left = genConditionalNode(line);
-      ifNode->right = genGenericNode(SUPERNODE, bodyNode);
-      return genGenericNode(BINARYNODE, ifNode);
-}
-
-void *genConditionalNode(char *line) {
-      char *startcondition;
-      int parse;
-      struct BinaryNode *conditionNodeBin = malloc(sizeof(struct BinaryNode));
-      while ((startcondition = lendNextToken(line))[0] ==
-             TOKENS.OPEN_PARENTHESIS)
-            getNextToken(line);
-      ;
-
-      void *buf = genValueNode(INT, line);
-      int condition = _conditional(getNextToken(line), line);
-      if (condition != NONE) {
-            conditionNodeBin->left = buf;
-            conditionNodeBin->type = condition;
-            conditionNodeBin->right = genConditionalNode(line);
-      } else {
-            return buf;
-      }
-      return genGenericNode(BINARYNODE, conditionNodeBin);
-}
-
 void *genGenericNode(enum TypeNode type, void *node) {
       struct Node *genericNode = malloc(sizeof(struct Node));
       genericNode->type = type;
       genericNode->node = node;
       return genericNode;
 }
-void addtoGlobalNode(void *Node) {
-      GLOBAL_NODE->nodes[GLOBAL_NODE->contNodes++] = Node;
+void addtoCurrentSuperNode(void *Node) {
+      ptrCurrentSuperNode->nodes[ptrCurrentSuperNode->contNodes++] = Node;
 }
+void changeToNewScope(struct SuperNode *newScope) {
+      *++depthCurrentSuperNode = newScope;
+      ptrCurrentSuperNode = newScope;
+}
+void goBackScope() { ptrCurrentSuperNode = *--depthCurrentSuperNode; }

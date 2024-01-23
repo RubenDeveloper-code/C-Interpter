@@ -1,4 +1,16 @@
 int a=10;
 int b=15+a+100;
+a=20;
 if(a>b&&10||b!=a){
+int x=10+1;
+int g;
+}else{
+int w;
+if(a<b){
+int y;
+}else{
+int q;
+}
+}
+int z=500;
 
