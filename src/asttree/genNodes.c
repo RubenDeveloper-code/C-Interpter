@@ -22,12 +22,18 @@ void generateNode(char *line) {
                   } else if (typeBinNode == DEF) {
                         addtoCurrentSuperNode(
                             genDefNode(line, _typeData(firstToken), token));
+                  } else if (typeBinNode == LOOP) {
+                        addtoCurrentSuperNode(
+                            genLoopNode(line, &firstCaseNewScope));
                   }
             } else if (typeSuperNode != NONE) {
                   if (typeSuperNode == IF) {
                         addtoCurrentSuperNode(genIfNode(
                             line, &firstCaseNewScope, &secondCaseNewScope));
-                  }
+                  } /* else if (typeSuperNode == FOR) {
+                         addtoCurrentSuperNode(
+                             genForNode(line, &firstCaseNewScope));
+                   }*/
             } else if (token[0] == TOKENS.OPEN_KEY) {
                   changeToNewScope(firstCaseNewScope);
             } else if (token[0] == TOKENS.CLOSED_KEY) {
@@ -130,6 +136,25 @@ void *genIfNode(char *line, struct SuperNode **IfScope,
       *ElseScope = bodyElseNode;
       return genGenericNode(SUPERNODE, ifNode);
 }
+// pa mas tarde el for
+void *genForNode(char *line, struct SuperNode **scopeFor) {
+      struct SuperNode *forNode = malloc(sizeof(struct SuperNode));
+      struct SuperNode *body = malloc(sizeof(struct SuperNode));
+      while (lendNextToken(line)[0] == TOKENS.OPEN_PARENTHESIS)
+            skipNextToken(line, "(");
+      forNode->nodes = malloc(sizeof(struct Node) * 4);
+      char *tempType = lendNextToken(line);
+      forNode->nodes[0] = genDeclNode(_typeData(tempType), line);
+      forNode->nodes[1] =
+          genDefNode(line, _typeData(tempType), getNextToken(line));
+      forNode->nodes[2] = genConditionalNode(line);
+      initSuperNode(&body, BODY);
+      forNode->nodes[3] = genGenericNode(SUPERNODE, body);
+      forNode->contNodes = 4;
+      forNode->type = FOR;
+      *scopeFor = body;
+      return genGenericNode(SUPERNODE, forNode);
+}
 
 void *genConditionalNode(char *line) {
       char *startcondition;
@@ -151,6 +176,7 @@ void *genConditionalNode(char *line) {
       }
       return genGenericNode(BINARYNODE, conditionNodeBin);
 }
+
 // +a...
 void *genBinOperationNode(char *line, char *leftVal, enum TypeConstNode td) {
       struct BinaryNode *opNode = malloc(sizeof(struct BinaryNode));
@@ -187,6 +213,24 @@ void *genBinOperationNode(char *line, char *leftVal, enum TypeConstNode td) {
             opNode->right = genGenericNode(CONSTNODE, rightope);
       }
       return genGenericNode(BINARYNODE, opNode);
+}
+
+void *genLoopNode(char *line, struct SuperNode **scope) {
+      struct SuperNode *body = malloc(sizeof(struct SuperNode));
+      struct BinaryNode *whileNode = malloc(sizeof(struct BinaryNode));
+      initSuperNode(&body, BODY);
+      whileNode->type = LOOP;
+      whileNode->left = genConditionalNode(line);
+      whileNode->right = genGenericNode(SUPERNODE, body);
+      return genGenericNode(BINARYNODE, whileNode);
+}
+
+void initSuperNode(struct SuperNode **sp, enum TypeSuperNode type) {
+      struct SuperNode *nsp = malloc(sizeof(struct SuperNode));
+      nsp->type = type;
+      nsp->nodes = malloc(sizeof(char) * BUFNODES);
+      nsp->contNodes = 0;
+      *sp = nsp;
 }
 
 void *genGenericNode(enum TypeNode type, void *node) {

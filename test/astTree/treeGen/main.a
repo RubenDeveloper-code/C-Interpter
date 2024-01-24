@@ -10,6 +10,9 @@ if(a<b){
 int y;
 }else{
 int q;
+while(a>b){
+a=a+b;
+}
 }
 }
 int z=500;

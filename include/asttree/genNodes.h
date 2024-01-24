@@ -14,10 +14,15 @@ void *genGenericNode(enum TypeNode type, void *node);
 void *genConditionalNode(char *line);
 void *genIfNode(char *line, struct SuperNode **IfScope,
                 struct SuperNode **ElseScope);
+void *genLoopNode(char *line, struct SuperNode **scope);
+// for(int i = 0; i < 10; i++){
+// }
+void *genForNode(char *line, struct SuperNode **scopeFor);
 void addtoCurrentSuperNode(void *Node);
 
 void changeToNewScope(struct SuperNode *newScope);
 void goBackScope();
 // renombrar
 void generateNode(char *line);
+void initSuperNode(struct SuperNode **sp, enum TypeSuperNode type);
 #endif

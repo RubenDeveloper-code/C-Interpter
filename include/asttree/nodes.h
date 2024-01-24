@@ -3,11 +3,11 @@
 
 enum TypeNode { SUPERNODE, BINARYNODE, CONSTNODE };
 
-enum TypeSuperNode { GLOBAL, BODYFOO, BODY, SECONDBODY, IF };
+enum TypeSuperNode { GLOBAL, BODYFOO, BODY, SECONDBODY, IF, FOR };
 enum TypeBinaryNode {
       DECL,
       DEF,
-      WHILE,
+      LOOP,
       ADD,
       RES,
       MULT,
@@ -19,7 +19,7 @@ enum TypeBinaryNode {
       LEQ,
       NEQ,
       GT,
-      LT
+      LT,
 
 };
 enum TypeConstNode { INT, CHAR, STRING, FLOAT, VAR, TYPEDATA };

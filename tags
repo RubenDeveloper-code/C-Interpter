@@ -91,9 +91,9 @@ ASTTOKENS	src/asttree/astTokens.c	/^struct ASTTokens ASTTOKENS = {$/;"	v	typeref
 ASTTokens	include/asttree/astTokens.h	/^struct ASTTokens {$/;"	s
 BIN	Makefile	/^BIN = bin\/$/;"	m
 BINARYNODE	include/asttree/nodes.h	/^enum TypeNode { SUPERNODE, BINARYNODE, CONSTNODE };$/;"	e	enum:TypeNode
-BINARYNODESTOSTRING	src/asttree/graphicTree.c	/^char *BINARYNODESTOSTRING[] = {"DECL", "DEF", "WHILE", "ADD", "RES",$/;"	v	typeref:typename:char * []
-BODY	include/asttree/nodes.h	/^enum TypeSuperNode { GLOBAL, BODYFOO, BODY, SECONDBODY, IF };$/;"	e	enum:TypeSuperNode
-BODYFOO	include/asttree/nodes.h	/^enum TypeSuperNode { GLOBAL, BODYFOO, BODY, SECONDBODY, IF };$/;"	e	enum:TypeSuperNode
+BINARYNODESTOSTRING	src/asttree/graphicTree.c	/^char *BINARYNODESTOSTRING[] = {"DECL", "DEF", "LOOP", "ADD", "RES",$/;"	v	typeref:typename:char * []
+BODY	include/asttree/nodes.h	/^enum TypeSuperNode { GLOBAL, BODYFOO, BODY, SECONDBODY, IF, FOR };$/;"	e	enum:TypeSuperNode
+BODYFOO	include/asttree/nodes.h	/^enum TypeSuperNode { GLOBAL, BODYFOO, BODY, SECONDBODY, IF, FOR };$/;"	e	enum:TypeSuperNode
 BRACKET_CLOSED	include/tokens.h	/^      const char BRACKET_CLOSED;$/;"	m	struct:Token	typeref:typename:const char
 BRACKET_OPEN	include/tokens.h	/^      const char BRACKET_OPEN;$/;"	m	struct:Token	typeref:typename:const char
 BUFFSIZE	include/asttree/declares.h	/^#define BUFFSIZE /;"	d
@@ -134,10 +134,11 @@ ERRORS	src/precompiler/pre_status.c	/^const char *ERRORS[] = {"", "syntax error 
 FILE_NO_EXISTS	include/precompiler/pre_status.h	/^      FILE_NO_EXISTS,$/;"	e	enum:ERROR
 FLOAT	include/asttree/nodes.h	/^enum TypeConstNode { INT, CHAR, STRING, FLOAT, VAR, TYPEDATA };$/;"	e	enum:TypeConstNode
 FOR	include/asttree/astTokens.h	/^      const char *FOR;$/;"	m	struct:ASTTokens	typeref:typename:const char *
+FOR	include/asttree/nodes.h	/^enum TypeSuperNode { GLOBAL, BODYFOO, BODY, SECONDBODY, IF, FOR };$/;"	e	enum:TypeSuperNode
 FREE	src/asttree/readerTokens.c	/^#define FREE /;"	d	file:
 GEQ	include/asttree/nodes.h	/^      GEQ,$/;"	e	enum:TypeBinaryNode
 GETT	src/asttree/readerTokens.c	/^#define GETT /;"	d	file:
-GLOBAL	include/asttree/nodes.h	/^enum TypeSuperNode { GLOBAL, BODYFOO, BODY, SECONDBODY, IF };$/;"	e	enum:TypeSuperNode
+GLOBAL	include/asttree/nodes.h	/^enum TypeSuperNode { GLOBAL, BODYFOO, BODY, SECONDBODY, IF, FOR };$/;"	e	enum:TypeSuperNode
 GLOBAL_NODE	src/asttree/genTree.c	/^struct SuperNode *GLOBAL_NODE;$/;"	v	typeref:struct:SuperNode *
 GT	include/asttree/nodes.h	/^      GT,$/;"	e	enum:TypeBinaryNode
 GT_OR_EQ	include/tokens.h	/^      const char *GT_OR_EQ;$/;"	m	struct:Token	typeref:typename:const char *
@@ -146,7 +147,7 @@ HOLA	test/precompiler/conditions/fortest/main.c	/^#define HOLA$/;"	d	file:
 HOLA	test/precompiler/includes/fortest/sum.h	/^#define HOLA /;"	d
 HOLA	test/precompiler/undef/fortest/main.c	/^#define HOLA /;"	d	file:
 IF	include/asttree/astTokens.h	/^      const char *IF;$/;"	m	struct:ASTTokens	typeref:typename:const char *
-IF	include/asttree/nodes.h	/^enum TypeSuperNode { GLOBAL, BODYFOO, BODY, SECONDBODY, IF };$/;"	e	enum:TypeSuperNode
+IF	include/asttree/nodes.h	/^enum TypeSuperNode { GLOBAL, BODYFOO, BODY, SECONDBODY, IF, FOR };$/;"	e	enum:TypeSuperNode
 IFDEF	include/precompiler/pre_tokens.h	/^      const char *IFDEF;$/;"	m	struct:TokensPecompiler	typeref:typename:const char *
 IFNDEF	include/precompiler/pre_tokens.h	/^      const char *IFNDEF;$/;"	m	struct:TokensPecompiler	typeref:typename:const char *
 INCLUDE	Makefile	/^INCLUDE = include\/$/;"	m
@@ -160,7 +161,8 @@ JUDAS	test/precompiler/conditions/fortest/main.c	/^#define JUDAS$/;"	d	file:
 JUMP_LINE	include/tokens.h	/^      const char JUMP_LINE;$/;"	m	struct:Token	typeref:typename:const char
 LEND	src/asttree/readerTokens.c	/^#define LEND /;"	d	file:
 LEQ	include/asttree/nodes.h	/^      LEQ,$/;"	e	enum:TypeBinaryNode
-LT	include/asttree/nodes.h	/^      LT$/;"	e	enum:TypeBinaryNode
+LOOP	include/asttree/nodes.h	/^      LOOP,$/;"	e	enum:TypeBinaryNode
+LT	include/asttree/nodes.h	/^      LT,$/;"	e	enum:TypeBinaryNode
 LT_OR_EQ	include/tokens.h	/^      const char *LT_OR_EQ;$/;"	m	struct:Token	typeref:typename:const char *
 LT_SIMBOL	include/tokens.h	/^      const char LT_SIMBOL;$/;"	m	struct:Token	typeref:typename:const char
 MACRO	include/precompiler/pre_defines.h	/^enum TYPE { NORMAL, MACRO };$/;"	e	enum:TYPE
@@ -183,10 +185,10 @@ PRECOMPILE_ORDER	include/precompiler/pre_tokens.h	/^      const char PRECOMPILE_
 QUOTES	include/tokens.h	/^      const char QUOTES;$/;"	m	struct:Token	typeref:typename:const char
 RES	include/asttree/nodes.h	/^      RES,$/;"	e	enum:TypeBinaryNode
 RES	include/tokens.h	/^      const char RES;$/;"	m	struct:Token	typeref:typename:const char
-RESERVED_WORDS	src/tokens.c	/^struct ReservedWords RESERVED_WORDS = {"int", "char", "float", "if", "else"};$/;"	v	typeref:struct:ReservedWords
+RESERVED_WORDS	src/tokens.c	/^struct ReservedWords RESERVED_WORDS = {"int",  "char",  "float", "if",$/;"	v	typeref:struct:ReservedWords
 RETURN	include/asttree/astTokens.h	/^      const char *RETURN;$/;"	m	struct:ASTTokens	typeref:typename:const char *
 ReservedWords	include/tokens.h	/^struct ReservedWords {$/;"	s
-SECONDBODY	include/asttree/nodes.h	/^enum TypeSuperNode { GLOBAL, BODYFOO, BODY, SECONDBODY, IF };$/;"	e	enum:TypeSuperNode
+SECONDBODY	include/asttree/nodes.h	/^enum TypeSuperNode { GLOBAL, BODYFOO, BODY, SECONDBODY, IF, FOR };$/;"	e	enum:TypeSuperNode
 SLASH	include/tokens.h	/^      const char SLASH;$/;"	m	struct:Token	typeref:typename:const char
 SPACE	include/tokens.h	/^      const char SPACE;$/;"	m	struct:Token	typeref:typename:const char
 SRC	Makefile	/^SRC = src\/$/;"	m
@@ -195,7 +197,7 @@ STATUS	include/precompiler/pre_status.h	/^enum STATUS { SUCCESS, ERROR };$/;"	g
 STRING	include/asttree/nodes.h	/^enum TypeConstNode { INT, CHAR, STRING, FLOAT, VAR, TYPEDATA };$/;"	e	enum:TypeConstNode
 SUCCESS	include/precompiler/pre_status.h	/^enum STATUS { SUCCESS, ERROR };$/;"	e	enum:STATUS
 SUPERNODE	include/asttree/nodes.h	/^enum TypeNode { SUPERNODE, BINARYNODE, CONSTNODE };$/;"	e	enum:TypeNode
-SUPERNODETOSTRING	src/asttree/graphicTree.c	/^char *SUPERNODETOSTRING[] = {"GLOBAL", "BODYFOO", "BODY", "SECONDBODY", "IF"};$/;"	v	typeref:typename:char * []
+SUPERNODETOSTRING	src/asttree/graphicTree.c	/^char *SUPERNODETOSTRING[] = {"GLOBAL",     "BODYFOO", "BODY",$/;"	v	typeref:typename:char * []
 SYNTAX_ERROR	include/precompiler/pre_status.h	/^      SYNTAX_ERROR = 1,$/;"	e	enum:ERROR
 SuperNode	include/asttree/nodes.h	/^struct SuperNode {$/;"	s
 TESTS	Makefile	/^TESTS = test\/$/;"	m
@@ -217,7 +219,7 @@ TokensPecompiler	include/precompiler/pre_tokens.h	/^struct TokensPecompiler {$/;
 TypeBinaryNode	include/asttree/nodes.h	/^enum TypeBinaryNode {$/;"	g
 TypeConstNode	include/asttree/nodes.h	/^enum TypeConstNode { INT, CHAR, STRING, FLOAT, VAR, TYPEDATA };$/;"	g
 TypeNode	include/asttree/nodes.h	/^enum TypeNode { SUPERNODE, BINARYNODE, CONSTNODE };$/;"	g
-TypeSuperNode	include/asttree/nodes.h	/^enum TypeSuperNode { GLOBAL, BODYFOO, BODY, SECONDBODY, IF };$/;"	g
+TypeSuperNode	include/asttree/nodes.h	/^enum TypeSuperNode { GLOBAL, BODYFOO, BODY, SECONDBODY, IF, FOR };$/;"	g
 Typedata	include/asttree/filters.h	/^enum Typedata { _INT_, _CHAR_, _STRING_, _FLOAT_ };$/;"	g
 UNDEF	include/precompiler/pre_tokens.h	/^      const char *UNDEF;$/;"	m	struct:TokensPecompiler	typeref:typename:const char *
 UNDERSCORE	include/tokens.h	/^      const char UNDERSCORE;$/;"	m	struct:Token	typeref:typename:const char
@@ -225,7 +227,6 @@ UNTILS	Makefile	/^UNTILS = src\/untils.c$/;"	m
 VALID	include/precompiler/pre_defines.h	/^#define VALID /;"	d
 VAR	include/asttree/nodes.h	/^enum TypeConstNode { INT, CHAR, STRING, FLOAT, VAR, TYPEDATA };$/;"	e	enum:TypeConstNode
 WHILE	include/asttree/astTokens.h	/^      const char *WHILE;$/;"	m	struct:ASTTokens	typeref:typename:const char *
-WHILE	include/asttree/nodes.h	/^      WHILE,$/;"	e	enum:TypeBinaryNode
 ZERO_END	include/tokens.h	/^      const char ZERO_END;$/;"	m	struct:Token	typeref:typename:const char
 _AND_	include/asttree/filters.h	/^      _AND_ = START_CONDITIONS,$/;"	e	enum:Conditions
 _CHAR_	include/asttree/filters.h	/^enum Typedata { _INT_, _CHAR_, _STRING_, _FLOAT_ };$/;"	e	enum:Typedata
@@ -234,6 +235,7 @@ _ELSE_	include/tokens.h	/^      const char *_ELSE_;$/;"	m	struct:ReservedWords	t
 _EQ_	include/asttree/filters.h	/^      _EQ_,$/;"	e	enum:Conditions
 _FLOAT_	include/asttree/filters.h	/^enum Typedata { _INT_, _CHAR_, _STRING_, _FLOAT_ };$/;"	e	enum:Typedata
 _FLOAT_	include/tokens.h	/^      const char *_FLOAT_;$/;"	m	struct:ReservedWords	typeref:typename:const char *
+_FOR_	include/tokens.h	/^      const char *_FOR_;$/;"	m	struct:ReservedWords	typeref:typename:const char *
 _GEQ_	include/asttree/filters.h	/^      _GEQ_,$/;"	e	enum:Conditions
 _GT_	include/asttree/filters.h	/^      _GT_,$/;"	e	enum:Conditions
 _IF_	include/tokens.h	/^      const char *_IF_;$/;"	m	struct:ReservedWords	typeref:typename:const char *
@@ -249,6 +251,7 @@ _POW_	test/precompiler/defines/fortest/somemacros.h	/^#define _POW_(/;"	d
 _STRING_	include/asttree/filters.h	/^enum Typedata { _INT_, _CHAR_, _STRING_, _FLOAT_ };$/;"	e	enum:Typedata
 _SUM_	test/precompiler/defines/fortest/somemacros.h	/^#define _SUM_(/;"	d
 _TEXT_	test/precompiler/defines/fortest/somemacros.h	/^#define _TEXT_ /;"	d
+_WHILE_	include/tokens.h	/^      const char *_WHILE_;$/;"	m	struct:ReservedWords	typeref:typename:const char *
 __AST_TOKENS_H__	include/asttree/astTokens.h	/^#define __AST_TOKENS_H__$/;"	d
 __DECLARE_H__	include/asttree/declares.h	/^#define __DECLARE_H__$/;"	d
 __ERRORS_H__	include/precompiler/pre_status.h	/^#define __ERRORS_H__$/;"	d
@@ -302,8 +305,10 @@ genBinOperationNode	src/asttree/genNodes.c	/^void *genBinOperationNode(char *lin
 genConditionalNode	src/asttree/genNodes.c	/^void *genConditionalNode(char *line) {$/;"	f	typeref:typename:void *
 genDeclNode	src/asttree/genNodes.c	/^void *genDeclNode(enum TypeConstNode td, char *line) {$/;"	f	typeref:typename:void *
 genDefNode	src/asttree/genNodes.c	/^void *genDefNode(char *line, enum TypeConstNode td, char *nameVar) {$/;"	f	typeref:typename:void *
+genForNode	src/asttree/genNodes.c	/^void *genForNode(char *line, struct SuperNode **scopeFor) {$/;"	f	typeref:typename:void *
 genGenericNode	src/asttree/genNodes.c	/^void *genGenericNode(enum TypeNode type, void *node) {$/;"	f	typeref:typename:void *
 genIfNode	src/asttree/genNodes.c	/^void *genIfNode(char *line, struct SuperNode **IfScope,$/;"	f	typeref:typename:void *
+genLoopNode	src/asttree/genNodes.c	/^void *genLoopNode(char *line, struct SuperNode **scope) {$/;"	f	typeref:typename:void *
 genRandomId	src/asttree/graphicTree.c	/^int genRandomId() {$/;"	f	typeref:typename:int
 genTree	src/asttree/graphicTree.c	/^void genTree(void *fatherNode, char *outFile) {$/;"	f	typeref:typename:void
 genValueNode	src/asttree/genNodes.c	/^void *genValueNode(enum TypeConstNode td, char *line) {$/;"	f	typeref:typename:void *
@@ -325,6 +330,7 @@ hola	test/precompiler/conditions/fortest/main.c	/^char *hola = "Estoy dentro de 
 holse	test/precompiler/conditions/fortest/main.c	/^char *holse = "->Estoy dentro de un bloque ifdef HOLA else ";$/;"	v	typeref:typename:char *
 ifwrt	src/precompiler/precompiler.c	/^int ifwrt[2048];$/;"	v	typeref:typename:int[2048]
 includeFile	src/precompiler/pre_includes.c	/^int includeFile(char *file, FILE *stream_out, char *path_src) {$/;"	f	typeref:typename:int
+initSuperNode	src/asttree/genNodes.c	/^void initSuperNode(struct SuperNode **sp, enum TypeSuperNode type) {$/;"	f	typeref:typename:void
 isBetweenQuotes	src/untils.c	/^int isBetweenQuotes(char *token, int lenght_token, char *line) {$/;"	f	typeref:typename:int
 isDefined	src/precompiler/pre_conditional.c	/^int isDefined(char *token) { return existsDef(token); }$/;"	f	typeref:typename:int
 judas	test/precompiler/conditions/fortest/main.c	/^char *judas = "->thiiiiiiiiiiiiiiiiiiiiiiiiis iiiiiiiiiiiis the pain ki ller";$/;"	v	typeref:typename:char *

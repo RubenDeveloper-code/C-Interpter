@@ -5,10 +5,11 @@
 #include <stdlib.h>
 #include <string.h>
 
-char *BINARYNODESTOSTRING[] = {"DECL", "DEF", "WHILE", "ADD", "RES",
-                               "MULT", "DIV", "AND",   "OR",  "EQ",
-                               "GEQ",  "LEQ", "NEQ",   "GT",  "LT"};
-char *SUPERNODETOSTRING[] = {"GLOBAL", "BODYFOO", "BODY", "SECONDBODY", "IF"};
+char *BINARYNODESTOSTRING[] = {"DECL", "DEF", "LOOP", "ADD", "RES",
+                               "MULT", "DIV", "AND",  "OR",  "EQ",
+                               "GEQ",  "LEQ", "NEQ",  "GT",  "LT"};
+char *SUPERNODETOSTRING[] = {"GLOBAL",     "BODYFOO", "BODY",
+                             "SECONDBODY", "IF",      "FOR"};
 char *CONSTNODETOSTRING[] = {"INT",   "CHAR", "STRING",
                              "FLOAT", "VAR",  "TYPEDATA"};
 

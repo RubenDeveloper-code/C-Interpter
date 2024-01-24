@@ -49,14 +49,20 @@ enum TypeBinaryNode _typeNodeBin(char *line, char *token) {
                   ;
       } else if (lendNextToken(line)[0] == TOKENS.EQUAL) {
             nodetype = DEF;
+      } else if (strcmp(token, RESERVED_WORDS._WHILE_) == 0) {
+            nodetype = LOOP;
       }
       return nodetype;
 }
 
 enum TypeSuperNode _typeSuperNode(char *line, char *token) {
       enum TypeSuperNode tsn = NONE;
-      if (strcmp(token, RESERVED_WORDS._IF_) == 0)
+      if (strcmp(token, RESERVED_WORDS._IF_) == 0) {
             tsn = IF;
+      } else if (strcmp(token, RESERVED_WORDS._FOR_) == 0) {
+            tsn = FOR;
+      }
+
       return tsn;
 }
 

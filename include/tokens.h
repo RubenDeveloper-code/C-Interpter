@@ -38,6 +38,8 @@ struct ReservedWords {
       const char *_FLOAT_;
       const char *_IF_;
       const char *_ELSE_;
+      const char *_WHILE_;
+      const char *_FOR_;
 };
 
 extern struct Token TOKENS;
